@@ -7,6 +7,8 @@ La tienda lo carga desde [jsDelivr](https://www.jsdelivr.com/) con una línea ch
 | Archivo | Qué hace |
 |---|---|
 | `b4/que-talle-soy.js` | «¿Qué talle soy?» en la ficha de cada prenda: altura + peso → talle recomendado, con la guía de medidas que sale de la descripción de la prenda. |
+| `b1/categorias-y-numeros.js` | Barra de categorías arriba en la compu y los números que suben en el inicio. |
+| `b3/opiniones-ficha.js` | Opiniones de clientes adentro de cada prenda, para deslizar. |
 | `b4/que-talle-soy.prueba.js` | La misma, pero solo se ve con `?flprueba` en la dirección (para probar cambios). |
 
 Está acá porque el cuadro del pie de Tiendanube tiene un tope de unos 64 KB y ya está casi lleno.
