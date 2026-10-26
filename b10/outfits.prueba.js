@@ -105,7 +105,8 @@
     });
     return k;
   }
-  function hayVar(v) { return v && v.available !== false && (v.stock == null || +v.stock > 0); }
+  // En LS.kit_components una prenda con stock INFINITO viene con stock 0 y available true: manda «available».
+  function hayVar(v) { return !!v && v.available !== false; }
   function kit(url) {
     if (!KITS[url]) KITS[url] = traer(url).then(function (h) { var k = leerKit(h, url); if (!k) throw new Error('no es un kit'); return k; });
     KITS[url].catch(function () { delete KITS[url]; });
