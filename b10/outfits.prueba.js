@@ -433,7 +433,10 @@
       var g = pendientes()[0]; if (!g) return;
       g.classList.add('flk-dijo'); g.classList.remove('flk-avisar'); void g.offsetWidth; g.classList.add('flk-avisar');
       var r = g.getBoundingClientRect();
-      if (r.top < 80 || r.bottom > innerHeight - 100) { try { g.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) { g.scrollIntoView(); } }
+      if (r.top < 80 || r.bottom > innerHeight - 100) {
+        try { g.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) { g.scrollIntoView(); }
+        setTimeout(function () { var r2 = g.getBoundingClientRect(); if (r2.bottom < 0 || r2.top > innerHeight) g.scrollIntoView({ block: 'center' }); }, 900);
+      }
     }
     d.addEventListener('click', function (e) {
       var t = e.target; if (!t || !t.closest) return;
