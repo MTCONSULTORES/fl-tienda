@@ -72,7 +72,7 @@
     var pm = html.match(/LS\.kit_discount_percent\s*=\s*([\d.]+)/); k.pct = pm ? +pm[1] : 0;
     var dv = html.match(/id="single-product"[^>]*data-variants="([^"]*)"/);
     try { var v0 = JSON.parse(decodificar(dv[1]))[0]; k.precio = +v0.price_number; k.lista = +(v0.compare_at_price_number || v0.price_number); k.hay = v0.available !== false; } catch (e) { return null; }
-    var tm = html.match(/<meta property="og:title" content="([^"]*)"/); k.nombre = tm ? decodificar(tm[1]) : '';
+    var tm = html.match(/<title>([^<]*)<\/title>/); k.nombre = tm ? decodificar(tm[1]).replace(/\s+-\s+Comprar en .*$/, '').trim() : '';   // los kits no traen og:title
     var i = html.indexOf('LS.kit_components'), j = html.indexOf('LS.kit_combinations', i);
     var blk = i > -1 ? html.slice(i, j > -1 ? j : i + 60000) : '';
     var re = /index:\s*(\d+),\s*product_id:\s*(\d+),\s*kit_component_id:\s*(\d+),\s*name:\s*("(?:[^"\\]|\\.)*"),\s*quantity:\s*(\d+)[\s\S]*?variants:\s*(\[[\s\S]*?\])\s*\}/g, c;
