@@ -25,7 +25,7 @@
  */
 (function () {
   if (window.FLB10) return;
-  window.FLB10 = { v: '1.1.0' }; window.FLB10T = function () { return { leerKit: leerKit, traerKit: traerKit, revisar: revisar, guardados: guardados, indice: indice, lista: lista, KITS: KITS, abrir: abrir }; };   // v1.0.0 (26-oct): PARA TODOS · v1.0.1 (27-oct): la sección va debajo de BEST SELLER · v1.0.2: 40 px de aire abajo, como la app
+  window.FLB10 = { v: '1.1.0' }; window.FLB10T = function () { return { leerKit: leerKit, traerKit: traerKit, revisar: revisar, guardados: guardados, indice: indice, lista: lista, KITS: KITS, abrir: abrir, vendible: vendible, kitVisto: kitVisto, MEM: MEM }; };   // v1.0.0 (26-oct): PARA TODOS · v1.0.1 (27-oct): la sección va debajo de BEST SELLER · v1.0.2: 40 px de aire abajo, como la app
                                    // v1.1.0 (27-oct): cuadro en las fichas de prendas, outfits sin stock / con prenda oculta afuera, compu igual a la app
   var PRUEBA = false;
   var CAT = '/shop-the-look/';                                   // categoría OUTFITS
@@ -155,29 +155,51 @@
     // cambio del tema, no prendas ocultas: no se esconde nada).
     var conLink = k.comps.filter(function (co) { return co.link; }).length;
     k.oculta = lis.length === k.comps.length && conLink > 0 && conLink < k.comps.length;
+    // ninguna con link: o están TODAS ocultas o el tema dejó de poner links. Se decide al usarlo (vendible), según si otro kit
+    // leído hace poco sí los traía.
+    k.sinLinks = lis.length > 0 && lis.length === k.comps.length && conLink === 0;
+    if (conLink) ss(LINKS, String(Date.now()));
     k.agotada = k.comps.some(function (co) { return !co.vars.some(hayVar); });
     k.ok = k.hay && !k.agotada && !k.oculta;
     return k;
   }
   // En LS.kit_components una prenda con stock INFINITO viene con stock 0 y available true: manda «available».
   function hayVar(v) { return !!v && v.available !== false; }
-  // para COMPRAR (ventanita): siempre la ficha recién leída
+  var LINKS = 'flb10ln', NOKIT = 'no es un kit';
+  function temaConLinks() { var t = +ss(LINKS) || 0; return Date.now() - t < T_KIT && Date.now() >= t; }
+  // ¿se puede mostrar y vender? (con stock, sin prendas ocultas)
+  function vendible(k) { return !!k && k.ok !== false && !(k.sinLinks && temaConLinks()); }
+  // La promesa queda en KITS solo mientras el pedido está en camino: la ventanita, que llama a kit(), siempre lee la ficha de nuevo.
   function kit(url) {
     if (!KITS[url]) {
-      KITS[url] = traerKit(url).then(function (h) { var k = leerKit(h, url); if (!k) throw new Error('no es un kit'); guardar(k); return k; });
-      KITS[url].catch(function () { delete KITS[url]; });
+      var p = traerKit(url).then(function (h) {
+        var k = leerKit(h, url);
+        if (!k) { marcarMalo(url); throw new Error(NOKIT); }
+        guardar(k); return k;
+      });
+      var soltar = function () { if (KITS[url] === p) delete KITS[url]; };
+      KITS[url] = p; p.then(soltar, soltar);
     }
     return KITS[url];
   }
+  var MEM = {};                                                // lo mismo que se guarda, en memoria (por si el navegador no deja guardar)
   function guardados() { try { var o = JSON.parse(ss(GUARDA) || 'null'); if (o && o.k) return o; } catch (e) {} return { k: {} }; }
-  function guardar(k) { var o = guardados(); o.k[k.url] = { t: Date.now(), k: k }; ss(GUARDA, JSON.stringify(o)); }
-  function fresco(e) { return e && e.k && Date.now() - e.t < T_KIT && Date.now() >= e.t; }
-  // para MOSTRAR: lo leído hace menos de 10 min (así no se baja cada ficha en cada página) o, si no hay, la ficha
-  function kitVisto(url) { var e = guardados().k[url]; return fresco(e) ? Promise.resolve(e.k) : kit(url); }
+  function anotar(url, e) { MEM[url] = e; var o = guardados(); o.k[url] = e; ss(GUARDA, JSON.stringify(o)); }
+  function guardar(k) { anotar(k.url, { t: Date.now(), k: k }); }
+  function marcarMalo(url) { anotar(url, { t: Date.now(), malo: 1 }); }
+  function reciente(e) { return !!e && Date.now() - e.t < T_KIT && Date.now() >= e.t; }
+  function fresco(e) { return reciente(e) && !!e.k; }
+  // para MOSTRAR: lo leído hace menos de 10 min (así no se baja cada ficha en cada página) o, si no hay, la ficha.
+  // Una página de OUTFITS que no es un kit (un producto común puesto ahí) no se vuelve a bajar por 10 min.
+  function kitVisto(url) {
+    var e = MEM[url] || guardados().k[url];
+    if (reciente(e) && e.malo) return Promise.reject(new Error(NOKIT));
+    return fresco(e) ? Promise.resolve(e.k) : kit(url);
+  }
   // los outfits que se pueden mostrar: los de la lista sin los que tienen una prenda oculta o agotada (si uno no se puede leer, queda)
   function revisar(l) {
     return Promise.all(l.map(function (o) { return kitVisto(o.url).then(null, function () { return null; }); }))
-      .then(function (ks) { return l.filter(function (o, i) { return !ks[i] || ks[i].ok !== false; }); });
+      .then(function (ks) { return l.filter(function (o, i) { return !ks[i] || vendible(ks[i]); }); });
   }
 
   /* ---------- la lista de outfits: la categoría OUTFITS ---------- */
@@ -214,14 +236,19 @@
     try { if (v === undefined) return w.localStorage.getItem(k); w.localStorage.setItem(k, v); } catch (e) {}
     return null;
   }
+  function indiceGuardado() {
+    try { var o = JSON.parse(ls(INDICE) || 'null'); if (o && o.m && Date.now() - o.t < T_IDX && Date.now() >= o.t) return o.m; } catch (e) {}
+    return null;
+  }
   function indice() {
-    try { var o = JSON.parse(ls(INDICE) || 'null'); if (o && o.m && Date.now() - o.t < T_IDX && Date.now() >= o.t) return Promise.resolve(o.m); } catch (e) {}
+    var g = indiceGuardado(); if (g) return Promise.resolve(g);
     return lista().then(function (x) {
       var us = x.l.concat(x.f).map(function (o) { return o.url; });
-      return Promise.all(us.map(function (u) { return kitVisto(u).then(null, function () { return null; }); }));
+      return Promise.all(us.map(function (u) { return kitVisto(u).then(null, function (er) { return er && er.message === NOKIT ? NOKIT : null; }); }));
     }).then(function (ks) {
       var m = {}, todos = true;
       ks.forEach(function (k) {
+        if (k === NOKIT) return;                                // no es un outfit: no cuenta (y no impide guardar el índice)
         if (!k) { todos = false; return; }
         k.comps.forEach(function (c) { if (!m[c.pid]) m[c.pid] = []; if (m[c.pid].indexOf(k.url) < 0) m[c.pid].push(k.url); });
       });
@@ -256,7 +283,9 @@
       // compu y tablet desde 601 px, como la app (de 601 a 980 un look por vez con su tarjeta; desde 981, dos)
       '@media (min-width:601px){' +
         '#flout .pista{height:600px}#flout .lk{width:300px;height:600px;max-width:none}#flout .ft{height:600px;aspect-ratio:auto}#flout .ft .bt,#flout .bd{display:none}' +
-        '#flout .pc{display:none}#flout .cd{display:block;position:absolute;top:74px;width:330px;padding:10px;background:#fff;border-radius:16px;box-shadow:0 0 5px 1px rgba(0,0,0,.1);z-index:1}' +
+        // la tarjeta va centrada en alto, como en la app (con 2 prendas queda a 73 px; con 3 también entra); con más de 3, lista de 400 px con scroll
+        '#flout .pc{display:none}#flout .cd{display:block;position:absolute;top:50%;transform:translateY(-50%);width:330px;padding:10px;background:#fff;border-radius:16px;box-shadow:0 0 5px 1px rgba(0,0,0,.1);z-index:1}' +
+        '#flout .ps.mu{max-height:400px;overflow-y:auto}' +
         '#flout .sl .lk:first-child .cd{right:180px}#flout .sl .lk:last-child:not(:first-child) .cd{left:180px}#flout .sl .lk:only-child .cd{left:auto;right:180px}' +
         // la tarjetita de cada prenda, medida contra la de la app: 110 px + 5 de aire + 1 de borde gris = 122 px de alto
         // (.ps encierra los márgenes: debajo de la última prenda quedan 20 px hasta los precios, como en la app)
@@ -271,6 +300,8 @@
         '#flout .ld{display:flex;flex-direction:column;align-items:center;gap:10px;margin:10px 0}#flout .ld .rw{gap:5px}#flout .ld .ls{font-size:15px;font-weight:400;opacity:.5;margin-right:7px}#flout .ld .pr{font-size:17px;font-weight:400}#flout .ld .of{display:block}' +
         '#flout .ld .bt{height:40px;padding:0 15px;font-size:15px}' +
       '}' +
+      // de 601 a 719 px el look (300) y su tarjeta (que sobresale 210 a la izquierda) no entran centrados: se corre lo justo
+      '@media (min-width:601px) and (max-width:719px){#flout .sl .lk:only-child{margin-left:calc(720px - 100vw)}}' +
       // ventanita del outfit
       '#flomod{position:fixed;inset:0;z-index:2147483000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px;color:#000;' + F + 'font-size:13px}' +
       '#flomod *{box-sizing:border-box}#flomod .bx{background:#F2EDE4;border-radius:12px;width:100%;max-width:660px;max-height:calc(100dvh - 32px);max-height:92vh;overflow-y:auto;overscroll-behavior:contain;padding:20px}' +
@@ -360,11 +391,8 @@
   }
   // Se puede llamar de nuevo (cambió el ancho de la ventana o se sacó un outfit): el estado vive en la sección (s.__…).
   function dibujar(s, l) {
-    var m = modo(), porSl = m === 2 ? 2 : 1, h = '', i, visto = null, p0 = s.querySelector('.pista');
-    if (p0) {                                                   // el look que se estaba viendo, para no volver al primero
-      var sl0 = s.querySelectorAll('.sl')[Math.round(p0.scrollLeft / Math.max(1, p0.clientWidth))], lk0 = sl0 && sl0.querySelector('.lk');
-      visto = lk0 && lk0.getAttribute('data-url');
-    }
+    // el look que se estaba viendo (se anota al moverse, con la medida de ese momento), para no volver al primero
+    var m = modo(), porSl = m === 2 ? 2 : 1, h = '', i, visto = s.__visto;
     s.__l = l; s.__modo = m; s.__porUrl = {}; l.forEach(function (o) { s.__porUrl[o.url] = o; });
     for (i = 0; i < l.length; i += porSl) h += '<div class="sl">' + l.slice(i, i + porSl).map(tarjetaLook).join('') + '</div>';
     s.innerHTML = '<div class="pista">' + h + '</div><button type="button" class="ar iz" aria-label="Outfit anterior">' + FLECHA + '</button>' +
@@ -386,7 +414,8 @@
       [].forEach.call(sls[n].querySelectorAll('.lk'), function (lk) {
         if (lk.__flp) return; lk.__flp = 1;
         kitVisto(lk.getAttribute('data-url')).then(function (k) {
-          lk.querySelector('.ps').innerHTML = k.comps.map(function (c) {
+          var ps = lk.querySelector('.ps'); ps.classList.toggle('mu', k.comps.length > 3);
+          ps.innerHTML = k.comps.map(function (c) {
             return '<div class="pr2"><img alt="" loading="lazy" src="' + esc(c.foto) + '"><div class="in"><span class="n" title="' + esc(c.nombre) + '">' + esc(c.nombre) + '</span>' +
               '<div class="p"><b>' + plataCent(c.precio) + '</b>' + (c.lista > c.precio ? '<s>' + plataCent(c.lista) + '</s>' : '') + '</div>' +
               (c.link ? '<a class="co" href="' + esc(c.link) + '">Comprar</a>' : '') + '</div></div>';
@@ -397,7 +426,11 @@
       });
     }
     prendas(0); prendas(1);
-    p.addEventListener('scroll', function () { var n = actual(); prendas(n); prendas(n + 1); }, { passive: true });
+    p.addEventListener('scroll', function () {
+      var n = actual(), lk = sls[n] && sls[n].querySelector('.lk');
+      if (lk) s.__visto = lk.getAttribute('data-url');      // el look que se está viendo (para un redibujo)
+      prendas(n); prendas(n + 1);
+    }, { passive: true });
     if (s.__fl) return;                                       // lo que sigue va una sola vez por sección
     s.__fl = 1;
     s.addEventListener('mouseenter', function () { s.__q = true; }); s.addEventListener('mouseleave', function () { s.__q = false; });
@@ -422,7 +455,7 @@
     kit(o.url).then(function (k) {
       if (d.getElementById('flomod') !== m) return;
       // la ficha recién leída manda: con una prenda oculta o agotada no se puede comprar (aunque se haya visto con datos de hace un rato)
-      if (k.ok === false) {
+      if (!vendible(k)) {
         m.querySelector('.cu').innerHTML = '<div class="cg">Este outfit no está disponible por ahora.</div>';
         ev('flb10_no_disponible', { outfit: k.nombre || o.nombre, oculta: k.oculta ? 1 : 0 });
         return;
@@ -559,10 +592,12 @@
       '.flk-avisar .js-kit-component-variant{animation:flkshk .45s ease}' +
       '@keyframes flkshk{0%,100%{transform:none}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}' +
       '@media (prefers-reduced-motion:reduce){.flk-avisar .js-kit-component-variant{animation:none}}');
-    // una prenda OCULTA (Tiendanube igual vende el kit; esa prenda queda sin link): el kit queda «Sin stock», como cuando falta stock
+    // una prenda OCULTA (Tiendanube igual vende el kit; esa prenda queda sin link): el kit queda «Sin stock», como cuando falta stock.
+    // Si NINGUNA tiene link, cuenta como «todas ocultas» solo si otro kit visto hace poco sí traía links (si no, sería el tema).
     var lis = d.querySelectorAll('[data-component="kit-breakdown.item"]');
     var conLink = [].filter.call(lis, function (li) { return li.querySelector('a[href*="/productos/"]'); }).length;
-    if (lis.length > 1 && conLink > 0 && conLink < lis.length) { sinStock(f); return; }
+    if (conLink) ss(LINKS, String(Date.now()));
+    if (lis.length > 1 && (conLink > 0 ? conLink < lis.length : temaConLinks())) { sinStock(f); return; }
     var gs = [].slice.call(f.querySelectorAll('[data-component="kit-breakdown.item-variation-group"]')).filter(function (g) { return g.querySelectorAll('.js-kit-component-variant').length > 1; });
     if (!gs.length) return;
     // el «marcado» de Tiendanube se tapa (sin sacarle la clase: su cuenta de la combinación sigue intacta)
@@ -649,8 +684,19 @@
         '#flconj .ps s{font-size:10px}#flconj .ps b{font-size:13px}#flconj .bt{height:33px;font-size:13px;padding:0 5px}}' +
       '@container (max-width:420px){#flconj .pb{gap:8px}}' +
       '@container (max-width:360px){#flconj .bw{display:flex;width:100%}#flconj .bt{margin-left:auto}}' +
+      // navegadores sin esas reglas (Safari de iOS 15): en el celu, igual el botón a la derecha y con su aire
+      '@supports not (container-type:inline-size){@media (max-width:600px){#flconj .pb{gap:8px}#flconj .bw{margin-left:auto}}}' +
       '@container (max-width:290px){#flconj .nm{font-size:17px}#flconj .ps s{font-size:10px}#flconj .ps b{font-size:13px}}' +
       '@media (prefers-reduced-motion:reduce){#flconj .fo,#flconj .nm,#flconj .ps{transition:none}}');
+  }
+  function volverApp() { var st = d.getElementById('flb10-app'); if (st) st.parentNode.removeChild(st); }
+  // las urls de OUTFITS (con y sin stock) si la lista se leyó hace menos de 10 min; si no, null
+  function catGuardada() {
+    try {
+      var o = JSON.parse(ss('flb10cat') || 'null');
+      if (o && o.l && Date.now() - o.t < 6e5 && Date.now() >= o.t) return o.l.concat(o.f || []).map(function (x) { return x.url; });
+    } catch (e) {}
+    return null;
   }
   // ¿a la prenda de esta ficha le queda algún talle? (lo que dice la ficha recién cargada, más nuevo que lo guardado)
   function prendaConStock() {
@@ -660,6 +706,12 @@
   function conjunto() {
     var f = d.getElementById('product_form'), pid = w.LS && w.LS.product ? +w.LS.product.id : 0;
     if (!f || !pid || d.getElementById('flconj')) return;
+    // si el navegador no deja guardar, no se arma nada (cada ficha volvería a bajar todos los outfits); la app, si está, queda
+    ls('flb10p', '1'); if (ls('flb10p') !== '1') return;
+    // con el índice ya guardado se sabe enseguida si esta prenda está en un outfit: el cuadro de la app se esconde de entrada
+    // (así no aparece y desaparece). Si después algo falla, vuelve.
+    var g0 = indiceGuardado(), escondio = false;
+    if (g0 && g0[pid] && !d.getElementById('flb10-app')) { css('flb10-app', '#shop-the-look-container{display:none!important}'); escondio = true; }
     var empezo = false;
     function cargar() {
       if (empezo) return; empezo = true;
@@ -667,12 +719,14 @@
         return Promise.all((m[pid] || []).map(function (u) { return kitVisto(u).then(null, function () { return null; }); }));
       }).then(function (ks) {
         var mios = ks.filter(function (k) { return k && k.comps.some(function (c) { return c.pid === pid; }); });
-        if (!mios.length) return;                               // la prenda no está en ningún outfit
+        var cat = catGuardada();                                // si se sacó de OUTFITS hace poco, ya no cuenta (el índice dura 1 h)
+        if (cat) mios = mios.filter(function (k) { return cat.indexOf(k.url) > -1; });
+        if (!mios.length) { if (escondio) volverApp(); return; }   // la prenda no está en ningún outfit
         css('flb10-app', '#shop-the-look-container{display:none!important}');   // el de la app (mientras siga instalada)
         if (!prendaConStock()) return;                          // esta prenda se agotó: sus outfits no se pueden llevar
-        mios = mios.filter(function (k) { return k.ok; });     // sin stock o con una prenda oculta: no se muestra
+        mios = mios.filter(vendible);                           // sin stock o con una prenda oculta: no se muestra
         if (mios.length) armarConjunto(f, mios);
-      }).catch(function () {});                                 // si algo falla no se muestra nada (la app, si está, queda como estaba)
+      }).catch(function () { if (escondio && !d.getElementById('flconj')) volverApp(); });   // si algo falla, la app (si está) como estaba
     }
     // no compite con la carga de la ficha: arranca cuando terminó (o a los 4 s)
     if (d.readyState === 'complete') cargar(); else { w.addEventListener('load', cargar); setTimeout(cargar, 4000); }
@@ -684,7 +738,7 @@
     ks.forEach(function (k) { k.comps.forEach(function (c) { items.push({ k: k, c: c }); }); });
     var box = d.createElement('div'); box.id = 'flconj';
     box.innerHTML = '<div class="ti"></div><div class="cj" role="group" aria-roledescription="carrusel" aria-label="Outfits con esta prenda">' +
-      '<button type="button" class="ch iz" aria-label="Prenda anterior">' + CHEV_IZ + '</button><div class="it" aria-live="polite"></div>' +
+      '<button type="button" class="ch iz" aria-label="Prenda anterior">' + CHEV_IZ + '</button><div class="it" aria-live="off"></div>' +
       '<button type="button" class="ch de" aria-label="Prenda siguiente">' + CHEV_DE + '</button></div>';
     // donde estaba el de la app: debajo del botón de compra (y de las opiniones), antes de «Medios de pago» / «Medios de envío».
     // En compu el bloque 2 ya los sacó del formulario y dejó una marca «flb2» en su lugar: va antes de esa marca, así al girar
@@ -711,16 +765,21 @@
       va = (i + items.length) % items.length;
       if (lento) { n = va; pintar(); return; }
       it.classList.add('fu');
-      cambio = setTimeout(function () { n = va; pintar(); it.classList.remove('fu'); }, 500);
+      // void offsetWidth: los elementos nuevos arrancan apagados y se prenden en medio segundo (si no, aparecen de golpe)
+      cambio = setTimeout(function () { n = va; pintar(); void it.offsetWidth; it.classList.remove('fu'); }, 500);
     }
     function auto() {
       clearInterval(t);
       if (lento || items.length < 2) return;
       t = setInterval(function () { if (!quieto && !d.hidden && !d.getElementById('flomod')) ir(va + 1); }, AUTO_MS);
     }
-    box.querySelector('.iz').onclick = function () { ir(va - 1); auto(); };
-    box.querySelector('.de').onclick = function () { ir(va + 1); auto(); };
+    // cuando pasa sola no se anuncia (el lector de pantalla no lo lee cada 5 s); con las flechas, sí
+    function aMano(i) { it.setAttribute('aria-live', 'polite'); ir(i); auto(); }
+    box.querySelector('.iz').onclick = function () { aMano(va - 1); };
+    box.querySelector('.de').onclick = function () { aMano(va + 1); };
     box.addEventListener('mouseenter', function () { quieto = true; }); box.addEventListener('mouseleave', function () { quieto = false; });
+    box.addEventListener('focusin', function () { quieto = true; });   // con el teclado adentro no cambia sola (no se pierde el foco)
+    box.addEventListener('focusout', function (e) { if (!e.relatedTarget || !box.contains(e.relatedTarget)) quieto = false; });
     it.addEventListener('click', function (e) {
       var b = e.target.closest && e.target.closest('.bt'); if (!b) return;
       e.preventDefault(); e.stopPropagation();
@@ -743,13 +802,13 @@
     var its = d.querySelectorAll('.js-item-product[data-product-id]'); if (!its.length) return;
     css('flb10-no', '.js-item-product.flo-no{display:none!important}');
     var enOutfits = enCat(), ids = idsKit(), malos = {}, g = guardados().k;
-    Object.keys(g).forEach(function (u) { if (fresco(g[u]) && g[u].k.ok === false) malos[g[u].k.id] = 1; });
+    Object.keys(g).forEach(function (u) { if (fresco(g[u]) && !vendible(g[u].k)) malos[g[u].k.id] = 1; });
     [].forEach.call(its, function (it) {
       var id = +it.getAttribute('data-product-id');
       if (!id) return;                                          // el molde vacío de la compra rápida del tema
       if (!enOutfits && ids.indexOf(id) < 0 && !malos[id]) return;   // no es un outfit: no se toca
       if (malos[id] || !disponible(it)) { noVa(it); return; }
-      if (enOutfits && urlDe(it)) kitVisto(urlDe(it)).then(function (k) { if (k.ok === false) noVa(it); }, function () {});
+      if (enOutfits && urlDe(it)) kitVisto(urlDe(it)).then(function (k) { if (!vendible(k)) noVa(it); }, function () {});
     });
   }
 
