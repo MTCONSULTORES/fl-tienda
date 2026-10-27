@@ -10,6 +10,7 @@ La tienda lo carga desde [jsDelivr](https://www.jsdelivr.com/) con una línea ch
 | `b1/categorias-y-numeros.js` | Barra de categorías arriba en la compu y los números que suben en el inicio. |
 | `b3/opiniones-ficha.js` | Opiniones de clientes adentro de cada prenda, para deslizar. |
 | `b4/que-talle-soy.prueba.js` | La misma, pero solo se ve con `?flprueba` en la dirección (para probar cambios). |
+| `b11/cuenta-regresiva.js` | Cuenta regresiva de la Winter Sale (hasta el sábado 31-oct-2026 a las 23:59): bloques de hielo en el inicio, reloj en la cinta celeste, renglón en el cartel «te ahorrás» de la prenda, franja en su categoría y «4 DÍAS» en la cucarda. Después de esa hora se borra sola. |
 
 Está acá porque el cuadro del pie de Tiendanube tiene un tope de unos 64 KB y ya está casi lleno.
 No hay datos privados en este repositorio: es solo código que igual viaja a cada visitante de la tienda.
