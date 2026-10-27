@@ -428,7 +428,8 @@
     prendas(0); prendas(1);
     p.addEventListener('scroll', function () {
       var n = actual(), lk = sls[n] && sls[n].querySelector('.lk');
-      if (lk) s.__visto = lk.getAttribute('data-url');      // el look que se está viendo (para un redibujo)
+      // el look que se está viendo (para un redibujo); mientras cambia el ancho y todavía no se rearmó, la medida no sirve
+      if (lk && modo() === m) s.__visto = lk.getAttribute('data-url');
       prendas(n); prendas(n + 1);
     }, { passive: true });
     if (s.__fl) return;                                       // lo que sigue va una sola vez por sección
