@@ -25,7 +25,7 @@
  */
 (function () {
   if (window.FLB10) return;
-  window.FLB10 = { v: '1.1.0' }; window.FLB10T = function () { return { leerKit: leerKit, traerKit: traerKit, revisar: revisar, guardados: guardados, indice: indice, lista: lista }; };   // v1.0.0 (26-oct): PARA TODOS · v1.0.1 (27-oct): la sección va debajo de BEST SELLER · v1.0.2: 40 px de aire abajo, como la app
+  window.FLB10 = { v: '1.1.0' }; window.FLB10T = function () { return { leerKit: leerKit, traerKit: traerKit, revisar: revisar, guardados: guardados, indice: indice, lista: lista, KITS: KITS, abrir: abrir }; };   // v1.0.0 (26-oct): PARA TODOS · v1.0.1 (27-oct): la sección va debajo de BEST SELLER · v1.0.2: 40 px de aire abajo, como la app
                                    // v1.1.0 (27-oct): cuadro en las fichas de prendas, outfits sin stock / con prenda oculta afuera, compu igual a la app
   var PRUEBA = false;
   var CAT = '/shop-the-look/';                                   // categoría OUTFITS
