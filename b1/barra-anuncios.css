@@ -1,0 +1,7 @@
+/* FL barra de anuncios (opción 1, 28-oct-2026): letra, rombito celeste entre mensajes y lugar del ícono (el ícono lo pone el bloque 1) */
+.js-adbar .adbar-message{display:inline-flex;align-items:center;position:relative;margin-right:0!important;padding-left:21px;font-weight:700;font-size:11px;line-height:20px;letter-spacing:.08em;text-transform:uppercase;color:#F2EDE4;vertical-align:middle}
+.js-adbar .adbar-message.flba-sin{padding-left:0}
+.js-adbar .adbar-message:after{content:"";flex:none;width:5px;height:5px;margin:0 26px;background:#62A6D8;transform:rotate(45deg)}
+.js-adbar .flba-ic{position:absolute;left:0;top:50%;width:14px;height:14px;margin-top:-7px}
+.js-adbar .flba-copo .flba-ic{color:#62A6D8}
+@media (min-width:992px){.js-adbar .adbar-message{font-size:11.5px}}
