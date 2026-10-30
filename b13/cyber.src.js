@@ -10,10 +10,10 @@
    El reloj cambia SOLO el texto de los números (nodeValue), nunca el HTML. ES5. */
 (function (w, d) {
   if (w.FLB13) return;
-  var F = w.FLB13 = { v: '1.0.0', err: [] };
+  var F = w.FLB13 = { v: '1.1.0', err: [] };     // 1.1.0 (30-oct): ENVÍO GRATIS para todos en el Cyber (tarjetas y ficha)
   var INICIO = Date.UTC(2026, 10, 2, 3), FIN = Date.UTC(2026, 10, 5, 3);     // lun 2-nov 00:00 → jue 5-nov 00:00 (AR)
   var BARRA = ['Cyber Monday · 2, 3 y 4 de noviembre', 'Hasta 30% OFF por transferencia',
-    'Envío gratis superando $180.000', '3 y 6 cuotas sin interés'];
+    'Envío gratis a todo el país', '3 y 6 cuotas sin interés'];   // en el Cyber el envío es gratis en TODA la web
   var CINTA_NEGRA = ['Cyber Monday', 'Hasta 30% OFF', 'Abonando por transferencia'];
   var CINTA_ROJA = ['Envío gratis a todo el país', '2, 3 y 4 de noviembre', '3 y 6 cuotas sin interés'];
   var IR = '/productos/';
@@ -138,10 +138,39 @@
     return true;
   }
 
+  /* ---------- ENVÍO GRATIS (en el Cyber es para toda la web) ----------
+     Tarjetas (opción B, elegida el 30-oct): bloque negro con «ENVÍO GRATIS» en rojo debajo del precio por transferencia.
+     Lo dibuja el CSS avanzado (:after del precio, sale junto con él y no salta nada); acá solo se le pone el camión de
+     fondo. Ficha: el renglón gris del tema (.js-free-shipping-message) pasa a ser el bloque negro como el del banner; su
+     alto ya lo reserva el CSS avanzado y acá se pone adentro el camión y los textos. */
+  var CAMION_SVG = '<svg viewBox="0 0 64 40" width="44" height="28" fill="none" stroke="#F2EDE4" stroke-width="3.6" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M3 6h36v24H3zM39 14h12l9 9v7H39z"/><circle cx="14" cy="31" r="5" fill="#E3311D" stroke="#E3311D"/>' +
+    '<circle cx="48" cy="31" r="5" fill="#E3311D" stroke="#E3311D"/></svg>';
+  var CAMION_URL = 'url("data:image/svg+xml,' + encodeURIComponent(CAMION_SVG.replace(' width="44" height="28"', ' xmlns="http://www.w3.org/2000/svg"')) + '")';
+  function estilos() {
+    if (d.getElementById('cy-css')) return;
+    var s = d.createElement('style'); s.id = 'cy-css'; s.setAttribute('data-flp', 'cy');
+    s.textContent = 'html.cy .js-item-product .js-item-price-container:after{background-image:' + CAMION_URL + '}' +
+      'html.cy .cy-egf-caja{display:flex;align-items:center;min-height:66px;margin:12px 0 18px;padding:11px 12px;box-sizing:border-box;' +
+      'background:#0B0B0B;box-shadow:inset 0 3px 0 #E3311D}';
+    (d.head || d.documentElement).appendChild(s);
+  }
+  var ENVIO_FICHA = '<span class="cy-egf" data-flp="cy">' + CAMION_SVG + '<span class="tx"><span class="g">ENVÍO GRATIS</span>' +
+    '<span class="c">A todo el país · <b>hasta el miércoles 4</b></span></span></span>';
+  function envioFicha() {
+    if (!w.LS || !w.LS.product) return;
+    if (d.querySelector('.cy-egf')) return;
+    var m = d.querySelector('.free-shipping-message.js-free-shipping-message');   // el renglón de abajo del precio (hay otro en el formulario)
+    if (m) { m.insertAdjacentHTML('beforeend', ENVIO_FICHA); return; }
+    var h = d.querySelector('[data-flp="precios-ficha"]');                 // si el tema no trae el renglón: debajo del precio
+    if (h) h.insertAdjacentHTML('afterend', '<div class="cy-egf-caja" data-flp="cy">' + ENVIO_FICHA + '</div>');
+  }
+
   function marcar(donde) { try { if (w.gtag) w.gtag('event', 'flb13_' + donde); } catch (e) { anotar(e); } }
 
   function pasar() {
     try { reloj(); } catch (e1) { anotar(e1); }
+    try { envioFicha(); } catch (e6) { anotar(e6); }
     try { barra(); } catch (e2) { anotar(e2); }
     var listo = true;
     try { if (!cinta() && d.querySelector('.section-slider-home')) listo = false; } catch (e3) { anotar(e3); }
@@ -150,6 +179,7 @@
   }
 
   try { letra(); } catch (e0) { anotar(e0); }
+  try { estilos(); } catch (e7) { anotar(e7); }
   try { inicio(); } catch (e5) { anotar(e5); d.documentElement.classList.add('cy-ok'); }
   // la cinta (Tag Manager) y la barra de categorías (bloque 1) llegan después: se miran los cambios hasta 20 s
   var t = 0, obs = null;
@@ -163,5 +193,6 @@
   }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', function () { pasar(); velocidad(); });
   w.addEventListener('load', velocidad);
-  setInterval(function () { try { reloj(); } catch (e) { anotar(e); } }, 1000);
+  // cada segundo: el reloj y, en la ficha, el bloque de envío gratis por si el tema rehízo su renglón (al cambiar de talle)
+  setInterval(function () { try { reloj(); envioFicha(); } catch (e) { anotar(e); } }, 1000);
 })(window, document);
