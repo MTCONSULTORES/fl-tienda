@@ -1,0 +1,63 @@
+/* FL bloque 13 · Cyber Monday 2-4 nov 2026 (opcion 1: negro arriba, prendas en crema). Todo cuelga de html.cy, que lo pone el cargador del pie solo esos dias (o con ?flcyber). Sin variables ni :has (Tiendanube los borra). */
+html.cy .js-adbar{border-bottom:1px solid #2A2927}
+html.cy .js-adbar .adbar-message{font-family:"Geist Mono",ui-monospace,Menlo,monospace!important;font-size:10.5px!important;letter-spacing:.16em!important;padding-left:0!important}
+html.cy .js-adbar .adbar-message:after{background:#E3311D!important;transform:none!important;width:6px!important;height:6px!important;margin:0 22px!important}
+html.cy .js-adbar .flba-ic{display:none!important}
+html.cy .js-head-main{border-bottom:1px solid #2A2927!important}
+html.cy .js-head-main .logo-img{filter:invert(1)}
+html.cy .js-cart-widget-amount{background:#E3311D!important;color:#F2EDE4!important}
+html.cy #flb1cat{background:#0B0B0B!important;border-color:#2A2927!important}
+html.cy #flb1cat a,html.cy #flb1cat button,html.cy #flb1cat span{color:#F2EDE4!important}
+html.cy #flb1cat a.cy-m{color:#E3311D!important;font-family:"Geist Mono",ui-monospace,Menlo,monospace!important;letter-spacing:.14em!important}
+html.cy .cy-sq{display:inline-block;width:7px;height:7px;background:#E3311D;flex:none;margin-right:8px;vertical-align:middle}
+.cy-hero,#cy-reloj{display:none}
+html.cy section.section-slider-home>:not(.cy-hero){display:none!important}
+html.cy section.section-slider-home:before{content:"";display:block;height:0;padding-top:125%;background:#0B0B0B}
+html.cy section.section-slider-home:after{content:"";display:block;height:186px;background:#0B0B0B radial-gradient(rgba(242,237,228,.07) 1px,transparent 1.3px) 0 0/7px 7px;border-bottom:1px solid #2A2927}
+html.cy.cy-ok section.section-slider-home:before,html.cy.cy-ok section.section-slider-home:after{display:none}
+html.cy .cy-hero{display:block;line-height:0;background:#0B0B0B}
+html.cy .cy-hero img{display:block;width:100%;height:auto;aspect-ratio:4/5}
+html.cy #cy-reloj{display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;height:186px;padding:0 16px;background:#0B0B0B radial-gradient(rgba(242,237,228,.07) 1px,transparent 1.3px) 0 0/7px 7px;color:#F2EDE4;text-align:center;border-bottom:1px solid #2A2927}
+html.cy #cy-reloj a{display:block;color:inherit!important;text-decoration:none!important}
+html.cy #cy-reloj .et{display:flex;align-items:center;justify-content:center;font:700 11px/1 "Geist Mono",ui-monospace,Menlo,monospace;letter-spacing:.22em}
+html.cy #cy-reloj .et .cy-sq{width:8px;height:8px;margin-right:10px;animation:cyvivo 1.2s steps(1) infinite}
+@keyframes cyvivo{50%{opacity:.15}}
+html.cy #cy-reloj .caja{position:relative;display:inline-flex;align-items:flex-start;margin:14px 0 12px;padding:15px 20px 11px}
+html.cy #cy-reloj .q{position:absolute;width:14px;height:14px;border:0 solid rgba(242,237,228,.5)}
+html.cy #cy-reloj .q1{top:0;left:0;border-top-width:1.5px;border-left-width:1.5px}
+html.cy #cy-reloj .q2{top:0;right:0;border-top-width:1.5px;border-right-width:1.5px}
+html.cy #cy-reloj .q3{bottom:0;left:0;border-bottom-width:1.5px;border-left-width:1.5px}
+html.cy #cy-reloj .q4{bottom:0;right:0;border-bottom-width:1.5px;border-right-width:1.5px}
+html.cy #cy-reloj .u{margin:0 4px}
+html.cy #cy-reloj .u b{display:block;min-width:1.05em;font:400 52px/.92 Anton,Impact,"Arial Narrow",sans-serif;letter-spacing:.01em}
+html.cy #cy-reloj .u small{display:block;margin-top:8px;font:700 9px/1 "Geist Mono",ui-monospace,Menlo,monospace;letter-spacing:.22em;color:#8C877F}
+html.cy #cy-reloj .dp{font:400 36px/1.15 Anton,Impact,"Arial Narrow",sans-serif;color:#E3311D}
+html.cy #cy-reloj .pie{font:600 11.5px/1.35 "Plus Jakarta Sans",sans-serif;color:rgba(242,237,228,.72)}
+html.cy #cy-reloj .pie b{color:#F2EDE4;font-weight:800}
+html.cy .section-title{font-family:Anton,Impact,"Arial Narrow",sans-serif!important;font-size:30px!important;line-height:1!important;letter-spacing:.01em!important;text-transform:uppercase!important;font-weight:400!important;color:#0B0B0B!important}
+html.cy .section-title:after{content:"";display:inline-block;width:.34em;height:.74em;background:#E3311D;margin-left:.1em;vertical-align:-.03em}
+html.cy .js-home-sections-container .section-title:before{content:"PRECIOS CYBER";display:block;width:-webkit-fit-content;width:fit-content;margin:0 auto 10px;padding-left:15px;background:linear-gradient(#E3311D,#E3311D) 0 50%/7px 7px no-repeat;font:700 10px/1 "Geist Mono",ui-monospace,Menlo,monospace;letter-spacing:.22em;opacity:.8}
+html.cy .js-home-sections-container .js-products-sale-title:before{content:"LOS M\00C1S PEDIDOS"}
+html.cy .js-offer-label{background:#E3311D!important;color:#F2EDE4!important;border-radius:0!important;font-family:"Geist Mono",ui-monospace,Menlo,monospace!important;font-weight:700!important;letter-spacing:.08em!important}
+html.cy .js-item-product .item-name{font-weight:700!important;text-transform:uppercase;letter-spacing:.02em}
+html.cy i[data-starlist][data-starlist]:before,html.cy i[data-starlist][data-starlist]:after{color:#0B0B0B!important}
+html.cy #flcat .flcat-new{background:#E3311D!important;color:#F2EDE4!important;border-radius:0!important;font-family:"Geist Mono",ui-monospace,Menlo,monospace!important;letter-spacing:.12em!important}
+html.cy #flcinta .t1{background:#0B0B0B!important;cursor:pointer}
+html.cy #flcinta .t2{background:#E3311D!important;cursor:pointer}
+html.cy #flcinta .t1 .r,html.cy #flcinta .t1 .r span{color:#F2EDE4!important;text-shadow:none!important}
+html.cy #flcinta .t2 .r,html.cy #flcinta .t2 .r span{color:#0B0B0B!important;text-shadow:none!important}
+html.cy #flcinta .t1 .s{background:repeating-linear-gradient(-45deg,#E3311D 0 9px,#0B0B0B 9px 18px)!important}
+html.cy #flcinta .r em{display:inline-block;width:.42em;height:.42em;overflow:hidden;color:transparent!important;background:#E3311D;vertical-align:.18em;margin:0 .55em}
+html.cy #flcinta .t2 .r em{background:#0B0B0B}
+html.cy #flout .bd{background:#E3311D!important;color:#F2EDE4!important;border-radius:0!important;font-family:"Geist Mono",ui-monospace,Menlo,monospace!important;letter-spacing:.08em}
+html.cy #flout .bt{background:#0B0B0B!important;color:#F2EDE4!important;border-radius:0!important;font-family:"Geist Mono",ui-monospace,Menlo,monospace!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:uppercase!important}
+html.cy #flout .flo-tr{background:#0B0B0B!important;color:#F2EDE4!important;border-radius:0!important;box-shadow:inset 0 3px 0 #E3311D}
+html.cy #flbarra .bt{background:#E3311D!important;color:#0B0B0B!important;border-radius:0!important}
+html.cy #flb3 .st{color:#0B0B0B!important}
+html.cy #flb3 .tv{background:#E3311D!important;color:#F2EDE4!important;border-radius:0!important}
+html.cy #flcatp .ci.r{background:#E3311D!important;color:#0B0B0B!important}
+html.cy #flcatp .ci.r em{color:#0B0B0B!important}
+@media (min-width:768px){html.cy .cy-hero img{aspect-ratio:1440/547}html.cy section.section-slider-home:before{padding-top:37.99%}html.cy section.section-slider-home:after,html.cy #cy-reloj{height:226px}html.cy #cy-reloj .u{margin:0 8px}html.cy #cy-reloj .u b{font-size:70px}html.cy #cy-reloj .dp{font-size:48px}html.cy #cy-reloj .caja{padding:19px 30px 13px}html.cy .section-title{font-size:40px!important}}
+.js-adbar .adbar-message:after{background:#F2EDE4}
+/* fin de la Winter Sale (desde el 1-nov, para siempre): el rombito de la barra en crema y sin links a su categoria en el camino de la ficha ni en la barra de categorias */
+.breadcrumbs a[href*="/winter-sale-hasta-50-off"],.breadcrumbs a[href*="/winter-sale-hasta-50-off"]+.separator,#flb1cat a[href*="/winter-sale-hasta-50-off"]{display:none!important}
