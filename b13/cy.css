@@ -57,6 +57,21 @@ html.cy #flb3 .st{color:#0B0B0B!important}
 html.cy #flb3 .tv{background:#E3311D!important;color:#F2EDE4!important;border-radius:0!important}
 html.cy #flcatp .ci.r{background:#E3311D!important;color:#0B0B0B!important}
 html.cy #flcatp .ci.r em{color:#0B0B0B!important}
+html.cy .free-shipping-message.js-free-shipping-message{display:flex!important;align-items:center;min-height:66px;margin:12px 0 18px!important;padding:11px 12px!important;box-sizing:border-box;background:#0B0B0B;box-shadow:inset 0 3px 0 #E3311D}
+html.cy .free-shipping-message.js-free-shipping-message>:not(.cy-egf){display:none!important}
+html.cy .js-shipping-label-private{display:none!important}
+html.cy .cy-egf{display:flex;align-items:center}
+html.cy .cy-egf svg{flex:none;margin-right:12px}
+html.cy .cy-egf .tx{display:flex;flex-direction:column}
+html.cy .cy-egf .g{font:400 24px/1 Anton,Impact,"Arial Narrow",sans-serif;letter-spacing:.01em;color:#E3311D}
+html.cy .cy-egf .c{margin-top:5px;font:700 9.5px/1.2 "Geist Mono",ui-monospace,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,228,.8)}
+html.cy .cy-egf .c b{color:#F2EDE4}
+/* ENVIO GRATIS en cada tarjeta (opcion B, elegida el 30-oct): bloque negro debajo del precio por transferencia. Es CSS puro: sale junto con el precio y no salta nada; el camion se lo pone de fondo cyber.js */
+html.cy .js-item-product .js-item-price-container:after{content:"ENV\0000CDO GRATIS";display:flex;align-items:center;height:34px;margin-top:6px;padding-left:46px;box-sizing:border-box;background:#0B0B0B no-repeat 9px 50%/28px 18px;color:#E3311D;font:400 16px/1 Anton,Impact,"Arial Narrow",sans-serif;letter-spacing:.02em}
+@media (min-width:768px){html.cy .js-item-product .js-item-price-container:after{height:42px;padding-left:58px;background-position:13px 50%;background-size:34px 21px;font-size:20px}}
+/* tag CYBER MONDAY arriba a la derecha de la foto de cada tarjeta (30-oct: "solo lo del cyber monday, mas chiquito y estetico"). CSS puro encima de la foto: no mueve nada. Hace juego con el cartel de % OFF del tema (abajo a la izquierda, mono 8px, a 10px del borde) */
+html.cy .js-item-product .js-product-item-image-container-private:before{content:"CYBER MONDAY";position:absolute;top:10px;right:10px;z-index:4;display:flex;align-items:center;height:18px;padding:1px 6px 0 16px;box-sizing:border-box;background:#0B0B0B linear-gradient(#E3311D,#E3311D) no-repeat 7px 50%/5px 5px;color:#F2EDE4;font:700 8px/1 "Geist Mono",ui-monospace,Menlo,monospace;letter-spacing:.14em;white-space:nowrap;pointer-events:none}
+@media (min-width:768px){html.cy .js-item-product .js-product-item-image-container-private:before{top:14px;right:14px;height:24px;padding:1px 9px 0 22px;background-position:10px 50%;background-size:6px 6px;font-size:10px}}
 @media (min-width:768px){html.cy .cy-hero img{aspect-ratio:1440/547}html.cy section.section-slider-home:before{padding-top:37.99%}html.cy section.section-slider-home:after,html.cy #cy-reloj{height:226px}html.cy #cy-reloj .u{margin:0 8px}html.cy #cy-reloj .u b{font-size:70px}html.cy #cy-reloj .dp{font-size:48px}html.cy #cy-reloj .caja{padding:19px 30px 13px}html.cy .section-title{font-size:40px!important}}
 .js-adbar .adbar-message:after{background:#F2EDE4}
 /* fin de la Winter Sale (desde el 1-nov, para siempre): el rombito de la barra en crema y sin links a su categoria en el camino de la ficha ni en la barra de categorias */
