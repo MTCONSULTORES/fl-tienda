@@ -10,7 +10,8 @@
    El reloj cambia SOLO el texto de los números (nodeValue), nunca el HTML. ES5. */
 (function (w, d) {
   if (w.FLB13) return;
-  var F = w.FLB13 = { v: '1.1.3', err: [] };     // 1.1.3 (2-nov): «■ CYBER MONDAY» de la barra de categorías en su propio renglón (estaba escondido)
+  var F = w.FLB13 = { v: '1.1.4', err: [] };     // 1.1.4 (2-nov): medida del GIF de la compu en el <source> (la página saltaba al cargar)
+  //     // 1.1.3 (2-nov): «■ CYBER MONDAY» de la barra de categorías en su propio renglón (estaba escondido)
   //     // 1.1.2 (2-nov): 9 cuotas sin interés (primero en la barra, en la cinta y en el banner)
   //     // 1.1.1 (2-nov): sin «· precios ya rebajados» en el reloj (pedido de Facundo)
   //     // 1.1.0 (30-oct): ENVÍO GRATIS para todos en el Cyber (tarjetas y ficha)
@@ -43,7 +44,9 @@
     if (!x || !AQUI) return;
     if (!x.querySelector('.cy-hero')) {
       x.insertAdjacentHTML('beforeend', '<a class="cy-hero" data-flp="cy" href="' + IR + '"><picture>' +
-        '<source media="(min-width:768px)" srcset="' + AQUI + 'cyber-compu.gif">' +
+        // la medida va en el <source>: Tiendanube borra «aspect-ratio» del CSS avanzado y sin esto, en la compu, mientras
+        // carga el GIF se reservaba el alto del de celular (4:5) y al llegar se achicaba y la página saltaba (0,18)
+        '<source media="(min-width:768px)" srcset="' + AQUI + 'cyber-compu.gif" width="1440" height="547">' +
         '<img src="' + AQUI + 'cyber-celu.gif" width="800" height="1000" fetchpriority="high" ' +
         'alt="Cyber Monday: hasta 30% OFF abonando por transferencia y envío gratis a todo el país"></picture></a>');
       x.querySelector('.cy-hero').onclick = function () { marcar('banner'); };
