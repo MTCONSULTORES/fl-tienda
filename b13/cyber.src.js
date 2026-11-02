@@ -10,7 +10,8 @@
    El reloj cambia SOLO el texto de los números (nodeValue), nunca el HTML. ES5. */
 (function (w, d) {
   if (w.FLB13) return;
-  var F = w.FLB13 = { v: '1.1.2', err: [] };     // 1.1.2 (2-nov): 9 cuotas sin interés (primero en la barra, en la cinta y en el banner)
+  var F = w.FLB13 = { v: '1.1.3', err: [] };     // 1.1.3 (2-nov): «■ CYBER MONDAY» de la barra de categorías en su propio renglón (estaba escondido)
+  //     // 1.1.2 (2-nov): 9 cuotas sin interés (primero en la barra, en la cinta y en el banner)
   //     // 1.1.1 (2-nov): sin «· precios ya rebajados» en el reloj (pedido de Facundo)
   //     // 1.1.0 (30-oct): ENVÍO GRATIS para todos en el Cyber (tarjetas y ficha)
   var INICIO = Date.UTC(2026, 10, 2, 3), FIN = Date.UTC(2026, 10, 5, 3);     // lun 2-nov 00:00 → jue 5-nov 00:00 (AR)
@@ -133,10 +134,16 @@
     if (!a0) return false;
     var a = a0.cloneNode(false);
     a.className = (a0.className || '').replace(/(^|\s)ws(\s|$)/g, ' ') + ' cy-m'; a.href = IR; a.removeAttribute('target');
-    a.setAttribute('data-flp', 'cy');
+    a.setAttribute('data-flp', 'cy'); a.removeAttribute('data-flsw');
     a.innerHTML = '<i class="cy-sq"></i>CYBER MONDAY';
     a.onclick = function () { marcar('categorias'); };
-    a0.parentNode.insertBefore(a, a0);
+    // 1.1.3: el primer link es el de la Winter Sale y el sello (sinInvierno) esconde SU renglón con display:none: el de
+    // CYBER MONDAY va en un renglón propio, antes, no adentro del escondido
+    var li0 = a0.parentNode;
+    if (li0.tagName === 'LI') {
+      var li = li0.cloneNode(false); li.removeAttribute('style'); li.setAttribute('data-flp', 'cy');
+      li.appendChild(a); li0.parentNode.insertBefore(li, li0);
+    } else li0.insertBefore(a, a0);
     return true;
   }
 
