@@ -10,12 +10,14 @@
    El reloj cambia SOLO el texto de los números (nodeValue), nunca el HTML. ES5. */
 (function (w, d) {
   if (w.FLB13) return;
-  var F = w.FLB13 = { v: '1.1.0', err: [] };     // 1.1.0 (30-oct): ENVÍO GRATIS para todos en el Cyber (tarjetas y ficha)
+  var F = w.FLB13 = { v: '1.1.2', err: [] };     // 1.1.2 (2-nov): 9 cuotas sin interés (primero en la barra, en la cinta y en el banner)
+  //     // 1.1.1 (2-nov): sin «· precios ya rebajados» en el reloj (pedido de Facundo)
+  //     // 1.1.0 (30-oct): ENVÍO GRATIS para todos en el Cyber (tarjetas y ficha)
   var INICIO = Date.UTC(2026, 10, 2, 3), FIN = Date.UTC(2026, 10, 5, 3);     // lun 2-nov 00:00 → jue 5-nov 00:00 (AR)
-  var BARRA = ['Cyber Monday · 2, 3 y 4 de noviembre', 'Hasta 30% OFF por transferencia',
-    'Envío gratis a todo el país', '3 y 6 cuotas sin interés'];   // en el Cyber el envío es gratis en TODA la web
+  var BARRA = ['9 cuotas sin interés', 'Cyber Monday · 2, 3 y 4 de noviembre', 'Hasta 30% OFF por transferencia',
+    'Envío gratis a todo el país'];   // en el Cyber el envío es gratis en TODA la web; las 9 cuotas PRIMERO (pedido del 2-nov)
   var CINTA_NEGRA = ['Cyber Monday', 'Hasta 30% OFF', 'Abonando por transferencia'];
-  var CINTA_ROJA = ['Envío gratis a todo el país', '2, 3 y 4 de noviembre', '3 y 6 cuotas sin interés'];
+  var CINTA_ROJA = ['Envío gratis a todo el país', '9 cuotas sin interés', '2, 3 y 4 de noviembre'];
   var IR = '/productos/';
   // los GIF del banner están al lado de este archivo, en el mismo commit de jsDelivr
   var cs0 = d.currentScript, AQUI = (cs0 && cs0.src ? cs0.src : '').replace(/[^\/]*$/, '');
@@ -62,7 +64,7 @@
       r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">CYBER MONDAY · TERMINA EN</span></span>' +
         '<span class="caja"><i class="q q1"></i><i class="q q2"></i><i class="q q3"></i><i class="q q4"></i>' +
         u('d', 'DÍAS') + dp + u('h', 'HORAS') + dp + u('m', 'MIN') + dp + u('s', 'SEG') + '</span>' +
-        '<span class="pie" style="display:block">Hasta el <b>miércoles 4 a las 23:59</b> · precios ya rebajados</span></a>';
+        '<span class="pie" style="display:block;text-align:center">Hasta el <b>miércoles 4 a las 23:59</b></span></a>';
       nums = r.querySelectorAll('b[data-u]');
       r.querySelector('a').onclick = function () { marcar('reloj'); };
     }
@@ -76,7 +78,7 @@
     var et = r.querySelector('.et .t'), pie = r.querySelector('.pie');
     var titulo = antes ? 'CYBER MONDAY · EMPIEZA EN' : (q < 86400 ? 'CYBER MONDAY · ÚLTIMO DÍA' : 'CYBER MONDAY · TERMINA EN');
     if (et.firstChild.nodeValue !== titulo) et.firstChild.nodeValue = titulo;
-    var p = antes ? 'Arranca el <b>lunes 2 a las 00:00</b>' : 'Hasta el <b>miércoles 4 a las 23:59</b> · precios ya rebajados';
+    var p = antes ? 'Arranca el <b>lunes 2 a las 00:00</b>' : 'Hasta el <b>miércoles 4 a las 23:59</b>';
     if (pie.getAttribute('data-p') !== p) { pie.setAttribute('data-p', p); pie.innerHTML = p; }
   }
 
