@@ -11,7 +11,8 @@
    El reloj cambia SOLO el texto de los números (nodeValue), nunca el HTML. ES5. */
 (function (w, d) {
   if (w.FLB13) return;
-  var F = w.FLB13 = { v: '1.2.0', err: [] };     // 1.2.0 (5-nov): Cyber EXTENDIDO sin fechas ni reloj (franja en el lugar del reloj)
+  var F = w.FLB13 = { v: '1.2.1', err: [] };     // 1.2.1 (5-nov): «ÚLTIMA OPORTUNIDAD» en lugar de «por tiempo limitado» (pedido de Facundo)
+  //     // 1.2.0 (5-nov): Cyber EXTENDIDO sin fechas ni reloj (franja en el lugar del reloj)
   //     // 1.1.4 (2-nov): medida del GIF de la compu en el <source> (la página saltaba al cargar)
   //     // 1.1.3 (2-nov): «■ CYBER MONDAY» de la barra de categorías en su propio renglón (estaba escondido)
   //     // 1.1.2 (2-nov): 9 cuotas sin interés (primero en la barra, en la cinta y en el banner)
@@ -20,10 +21,10 @@
   var INICIO = Date.UTC(2026, 10, 2, 3), FIN = Date.UTC(2026, 10, 10, 3);    // lun 2-nov 00:00 → mar 10-nov 00:00 (AR) = hasta el lunes 9 a las 23:59
   var CONTADOR = false;     // false: franja «EXTENDIDO», sin ninguna fecha. true: cuenta regresiva hasta FIN (Facundo avisa el domingo)
   var PIE_RELOJ = 'Hasta el <b>lunes 9 a las 23:59</b>';
-  var BARRA = ['9 cuotas sin interés', 'Cyber Monday extendido', 'Hasta 30% OFF por transferencia',
+  var BARRA = ['9 cuotas sin interés', 'Cyber extendido: última oportunidad', 'Hasta 30% OFF por transferencia',
     'Envío gratis a todo el país'];   // en el Cyber el envío es gratis en TODA la web; las 9 cuotas PRIMERO (pedido del 2-nov)
   var CINTA_NEGRA = ['Cyber Monday', 'Hasta 30% OFF', 'Abonando por transferencia'];
-  var CINTA_ROJA = ['Envío gratis a todo el país', '9 cuotas sin interés', 'Por tiempo limitado'];
+  var CINTA_ROJA = ['Envío gratis a todo el país', '9 cuotas sin interés', 'Última oportunidad'];
   var IR = '/productos/';
   // los GIF del banner están al lado de este archivo, en el mismo commit de jsDelivr
   var cs0 = d.currentScript, AQUI = (cs0 && cs0.src ? cs0.src : '').replace(/[^\/]*$/, '');
@@ -66,10 +67,10 @@
   function franja(r) {
     if (r.getAttribute('data-cy')) return;
     r.setAttribute('data-cy', '1');
-    r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">CYBER MONDAY</span></span>' +
+    r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">CYBER MONDAY EXTENDIDO</span></span>' +
       '<span class="caja"><i class="q q1"></i><i class="q q2"></i><i class="q q3"></i><i class="q q4"></i>' +
-      '<span class="u"><b>EXTENDIDO</b></span></span>' +
-      '<span class="pie" style="display:block;text-align:center"><b>Por tiempo limitado</b> · Aprovechalo ahora</span></a>';
+      '<span class="u"><b class="uo">ÚLTIMA OPORTUNIDAD</b></span></span>' +
+      '<span class="pie" style="display:block;text-align:center"><b>No lo extendemos más</b> · Después vuelven los precios normales</span></a>';
     r.querySelector('a').onclick = function () { marcar('reloj'); };
   }
   function reloj() {
@@ -179,11 +180,14 @@
     var s = d.createElement('style'); s.id = 'cy-css'; s.setAttribute('data-flp', 'cy');
     s.textContent = 'html.cy .js-item-product .js-item-price-container:after{background-image:' + CAMION_URL + '}' +
       'html.cy .cy-egf-caja{display:flex;align-items:center;min-height:66px;margin:12px 0 18px;padding:11px 12px;box-sizing:border-box;' +
-      'background:#0B0B0B;box-shadow:inset 0 3px 0 #E3311D}';
+      'background:#0B0B0B;box-shadow:inset 0 3px 0 #E3311D}' +
+      // la frase larga se achica con el ancho del celu (la regla del reloj en el CSS avanzado la dejaría en 52 px y se cortaría)
+      'html.cy #cy-reloj .u b.uo{white-space:nowrap;font-size:calc((100vw - 84px) / 8.2);line-height:1.1}' +
+      '@media (min-width:600px){html.cy #cy-reloj .u b.uo{font-size:62px}}';
     (d.head || d.documentElement).appendChild(s);
   }
   var ENVIO_FICHA = '<span class="cy-egf" data-flp="cy">' + CAMION_SVG + '<span class="tx"><span class="g">ENVÍO GRATIS</span>' +
-    '<span class="c">A todo el país · <b>por tiempo limitado</b></span></span></span>';
+    '<span class="c">A todo el país · <b>última oportunidad</b></span></span></span>';
   function envioFicha() {
     if (!w.LS || !w.LS.product) return;
     if (d.querySelector('.cy-egf')) return;
