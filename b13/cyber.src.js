@@ -1,5 +1,6 @@
-/* FL Indumentaria · bloque 13 · CYBER MONDAY 2, 3 y 4 de noviembre de 2026 (opción 1: negro arriba, prendas en crema).
-   Lo carga el cargador del pie (cargador-b13.html) SOLO del lun 2-nov 00:00 al jue 5-nov 00:00 (Argentina) o con ?flcyber.
+/* FL Indumentaria · bloque 13 · CYBER MONDAY noviembre de 2026 (opción 1: negro arriba, prendas en crema).
+   Desde el 5-nov: EXTENDIDO, sin fechas ni reloj a la vista (pedido de Facundo). CONTADOR = true vuelve a mostrar el reloj.
+   Lo carga el cargador del pie (cargador-b13.html) SOLO del lun 2-nov 00:00 al mar 10-nov 00:00 (Argentina) o con ?flcyber.
    El cargador ya dejó puestos, antes de que se pinte la página, la clase «cy» en <html> (de ella cuelgan las reglas del
    CSS avanzado) y los colores del encabezado. El CSS reserva con :before/:after del carrusel el lugar del banner y del
    reloj; acá se ponen los de verdad (.cy-hero adentro del carrusel, #cy-reloj debajo) y, en el mismo momento, «cy-ok»
@@ -10,16 +11,19 @@
    El reloj cambia SOLO el texto de los números (nodeValue), nunca el HTML. ES5. */
 (function (w, d) {
   if (w.FLB13) return;
-  var F = w.FLB13 = { v: '1.1.4', err: [] };     // 1.1.4 (2-nov): medida del GIF de la compu en el <source> (la página saltaba al cargar)
+  var F = w.FLB13 = { v: '1.2.0', err: [] };     // 1.2.0 (5-nov): Cyber EXTENDIDO sin fechas ni reloj (franja en el lugar del reloj)
+  //     // 1.1.4 (2-nov): medida del GIF de la compu en el <source> (la página saltaba al cargar)
   //     // 1.1.3 (2-nov): «■ CYBER MONDAY» de la barra de categorías en su propio renglón (estaba escondido)
   //     // 1.1.2 (2-nov): 9 cuotas sin interés (primero en la barra, en la cinta y en el banner)
   //     // 1.1.1 (2-nov): sin «· precios ya rebajados» en el reloj (pedido de Facundo)
   //     // 1.1.0 (30-oct): ENVÍO GRATIS para todos en el Cyber (tarjetas y ficha)
-  var INICIO = Date.UTC(2026, 10, 2, 3), FIN = Date.UTC(2026, 10, 5, 3);     // lun 2-nov 00:00 → jue 5-nov 00:00 (AR)
-  var BARRA = ['9 cuotas sin interés', 'Cyber Monday · 2, 3 y 4 de noviembre', 'Hasta 30% OFF por transferencia',
+  var INICIO = Date.UTC(2026, 10, 2, 3), FIN = Date.UTC(2026, 10, 10, 3);    // lun 2-nov 00:00 → mar 10-nov 00:00 (AR) = hasta el lunes 9 a las 23:59
+  var CONTADOR = false;     // false: franja «EXTENDIDO», sin ninguna fecha. true: cuenta regresiva hasta FIN (Facundo avisa el domingo)
+  var PIE_RELOJ = 'Hasta el <b>lunes 9 a las 23:59</b>';
+  var BARRA = ['9 cuotas sin interés', 'Cyber Monday extendido', 'Hasta 30% OFF por transferencia',
     'Envío gratis a todo el país'];   // en el Cyber el envío es gratis en TODA la web; las 9 cuotas PRIMERO (pedido del 2-nov)
   var CINTA_NEGRA = ['Cyber Monday', 'Hasta 30% OFF', 'Abonando por transferencia'];
-  var CINTA_ROJA = ['Envío gratis a todo el país', '9 cuotas sin interés', '2, 3 y 4 de noviembre'];
+  var CINTA_ROJA = ['Envío gratis a todo el país', '9 cuotas sin interés', 'Por tiempo limitado'];
   var IR = '/productos/';
   // los GIF del banner están al lado de este archivo, en el mismo commit de jsDelivr
   var cs0 = d.currentScript, AQUI = (cs0 && cs0.src ? cs0.src : '').replace(/[^\/]*$/, '');
@@ -58,9 +62,20 @@
 
   /* ---------- reloj ---------- */
   var nums = null;
+  // sin CONTADOR: en el lugar del reloj (mismo alto, nada salta) una franja sin fecha, con las clases que ya están en el CSS avanzado
+  function franja(r) {
+    if (r.getAttribute('data-cy')) return;
+    r.setAttribute('data-cy', '1');
+    r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">CYBER MONDAY</span></span>' +
+      '<span class="caja"><i class="q q1"></i><i class="q q2"></i><i class="q q3"></i><i class="q q4"></i>' +
+      '<span class="u"><b>EXTENDIDO</b></span></span>' +
+      '<span class="pie" style="display:block;text-align:center"><b>Por tiempo limitado</b> · Aprovechalo ahora</span></a>';
+    r.querySelector('a').onclick = function () { marcar('reloj'); };
+  }
   function reloj() {
     var r = d.getElementById('cy-reloj');
     if (!r) return;
+    if (!CONTADOR) { franja(r); return; }
     if (!r.getAttribute('data-cy')) {
       r.setAttribute('data-cy', '1');
       var u = function (k, t) { return '<span class="u"><b data-u="' + k + '">00</b><small>' + t + '</small></span>'; };
@@ -68,7 +83,7 @@
       r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">CYBER MONDAY · TERMINA EN</span></span>' +
         '<span class="caja"><i class="q q1"></i><i class="q q2"></i><i class="q q3"></i><i class="q q4"></i>' +
         u('d', 'DÍAS') + dp + u('h', 'HORAS') + dp + u('m', 'MIN') + dp + u('s', 'SEG') + '</span>' +
-        '<span class="pie" style="display:block;text-align:center">Hasta el <b>miércoles 4 a las 23:59</b></span></a>';
+        '<span class="pie" style="display:block;text-align:center">' + PIE_RELOJ + '</span></a>';
       nums = r.querySelectorAll('b[data-u]');
       r.querySelector('a').onclick = function () { marcar('reloj'); };
     }
@@ -82,7 +97,7 @@
     var et = r.querySelector('.et .t'), pie = r.querySelector('.pie');
     var titulo = antes ? 'CYBER MONDAY · EMPIEZA EN' : (q < 86400 ? 'CYBER MONDAY · ÚLTIMO DÍA' : 'CYBER MONDAY · TERMINA EN');
     if (et.firstChild.nodeValue !== titulo) et.firstChild.nodeValue = titulo;
-    var p = antes ? 'Arranca el <b>lunes 2 a las 00:00</b>' : 'Hasta el <b>miércoles 4 a las 23:59</b>';
+    var p = antes ? 'Arranca el <b>lunes 2 a las 00:00</b>' : PIE_RELOJ;
     if (pie.getAttribute('data-p') !== p) { pie.setAttribute('data-p', p); pie.innerHTML = p; }
   }
 
@@ -168,7 +183,7 @@
     (d.head || d.documentElement).appendChild(s);
   }
   var ENVIO_FICHA = '<span class="cy-egf" data-flp="cy">' + CAMION_SVG + '<span class="tx"><span class="g">ENVÍO GRATIS</span>' +
-    '<span class="c">A todo el país · <b>hasta el miércoles 4</b></span></span></span>';
+    '<span class="c">A todo el país · <b>por tiempo limitado</b></span></span></span>';
   function envioFicha() {
     if (!w.LS || !w.LS.product) return;
     if (d.querySelector('.cy-egf')) return;
