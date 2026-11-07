@@ -1,5 +1,6 @@
 /* FL Indumentaria · bloque 13 · CYBER MONDAY noviembre de 2026 (opción 1: negro arriba, prendas en crema).
-   Desde el 5-nov: EXTENDIDO, sin fechas ni reloj a la vista (pedido de Facundo). CONTADOR = true vuelve a mostrar el reloj.
+   Desde el 5-nov: EXTENDIDO, con la franja «ÚLTIMA OPORTUNIDAD» en el lugar del reloj. Desde RELOJ_DESDE (dom 8-nov 00:00) la
+   franja se cambia sola por la cuenta regresiva hasta FIN, también en una página que ya estaba abierta (pedido de Facundo).
    Lo carga el cargador del pie (cargador-b13.html) SOLO del lun 2-nov 00:00 al mar 10-nov 00:00 (Argentina) o con ?flcyber.
    El cargador ya dejó puestos, antes de que se pinte la página, la clase «cy» en <html> (de ella cuelgan las reglas del
    CSS avanzado) y los colores del encabezado. El CSS reserva con :before/:after del carrusel el lugar del banner y del
@@ -11,7 +12,8 @@
    El reloj cambia SOLO el texto de los números (nodeValue), nunca el HTML. ES5. */
 (function (w, d) {
   if (w.FLB13) return;
-  var F = w.FLB13 = { v: '1.2.1', err: [] };     // 1.2.1 (5-nov): «ÚLTIMA OPORTUNIDAD» en lugar de «por tiempo limitado» (pedido de Facundo)
+  var F = w.FLB13 = { v: '1.3.0', err: [] };     // 1.3.0 (6-nov): la cuenta regresiva se prende sola el dom 8-nov 00:00 (pedido de Facundo)
+  //     // 1.2.1 (5-nov): «ÚLTIMA OPORTUNIDAD» en lugar de «por tiempo limitado» (pedido de Facundo)
   //     // 1.2.0 (5-nov): Cyber EXTENDIDO sin fechas ni reloj (franja en el lugar del reloj)
   //     // 1.1.4 (2-nov): medida del GIF de la compu en el <source> (la página saltaba al cargar)
   //     // 1.1.3 (2-nov): «■ CYBER MONDAY» de la barra de categorías en su propio renglón (estaba escondido)
@@ -19,7 +21,7 @@
   //     // 1.1.1 (2-nov): sin «· precios ya rebajados» en el reloj (pedido de Facundo)
   //     // 1.1.0 (30-oct): ENVÍO GRATIS para todos en el Cyber (tarjetas y ficha)
   var INICIO = Date.UTC(2026, 10, 2, 3), FIN = Date.UTC(2026, 10, 10, 3);    // lun 2-nov 00:00 → mar 10-nov 00:00 (AR) = hasta el lunes 9 a las 23:59
-  var CONTADOR = false;     // false: franja «EXTENDIDO», sin ninguna fecha. true: cuenta regresiva hasta FIN (Facundo avisa el domingo)
+  var RELOJ_DESDE = Date.UTC(2026, 10, 8, 3);     // dom 8-nov 00:00 (AR): hasta acá la franja «EXTENDIDO», desde acá la cuenta regresiva hasta FIN
   var PIE_RELOJ = 'Hasta el <b>lunes 9 a las 23:59</b>';
   var BARRA = ['9 cuotas sin interés', 'Cyber extendido: última oportunidad', 'Hasta 30% OFF por transferencia',
     'Envío gratis a todo el país'];   // en el Cyber el envío es gratis en TODA la web; las 9 cuotas PRIMERO (pedido del 2-nov)
@@ -63,10 +65,11 @@
 
   /* ---------- reloj ---------- */
   var nums = null;
-  // sin CONTADOR: en el lugar del reloj (mismo alto, nada salta) una franja sin fecha, con las clases que ya están en el CSS avanzado
+  // antes de RELOJ_DESDE: en el lugar del reloj (mismo alto, nada salta) una franja sin fecha, con las clases que ya están en el CSS avanzado
+  // data-cy dice qué hay adentro («f» franja, «r» reloj): así el cambio de las 00:00 también pasa en una página que ya estaba abierta
   function franja(r) {
-    if (r.getAttribute('data-cy')) return;
-    r.setAttribute('data-cy', '1');
+    if (r.getAttribute('data-cy') === 'f') return;
+    r.setAttribute('data-cy', 'f');
     r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">CYBER MONDAY EXTENDIDO</span></span>' +
       '<span class="caja"><i class="q q1"></i><i class="q q2"></i><i class="q q3"></i><i class="q q4"></i>' +
       '<span class="u"><b class="uo">ÚLTIMA OPORTUNIDAD</b></span></span>' +
@@ -76,9 +79,9 @@
   function reloj() {
     var r = d.getElementById('cy-reloj');
     if (!r) return;
-    if (!CONTADOR) { franja(r); return; }
-    if (!r.getAttribute('data-cy')) {
-      r.setAttribute('data-cy', '1');
+    if (ahora() < RELOJ_DESDE) { franja(r); return; }
+    if (r.getAttribute('data-cy') !== 'r') {
+      r.setAttribute('data-cy', 'r');
       var u = function (k, t) { return '<span class="u"><b data-u="' + k + '">00</b><small>' + t + '</small></span>'; };
       var dp = '<span class="dp">:</span>';
       r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">CYBER MONDAY · TERMINA EN</span></span>' +
