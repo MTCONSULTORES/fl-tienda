@@ -1,7 +1,7 @@
 /* FL Indumentaria · Barra de categorías en compu y números que suben (bloque 1, v1.0.1) · fuente: bloque1/b1.src.js (en la Mac: FL GRAL/ideas-atlas-destino/) */
 !function(t,e){if(!t.FLB1){t.FLB1={v:"1.0.1"};var a="#4E0A06",n="#3887C4";try{/[?&]flprueba=0/.test(location.search)?sessionStorage.removeItem("flb1"):/[?&]flprueba/.test(location.search)&&sessionStorage.setItem("flb1","1")}catch(t){}try{"1"===sessionStorage.getItem("flb1")}catch(t){}!1,t.FLB1.activo=!0;var r=t.matchMedia&&t.matchMedia("(prefers-reduced-motion: reduce)").matches,i="/"===location.pathname||""===location.pathname;"loading"===e.readyState?e.addEventListener("DOMContentLoaded",u):u()}function o(t){return String(null==t?"":t).replace(/[&<>"]/g,function(t){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[t]})}function l(t,e){var a=[];if(!t)return a;for(var n=0;n<t.children.length;n++)t.children[n].tagName===e&&a.push(t.children[n]);return a}function s(t){for(var e=0;e<t.children.length;e++){var a=t.children[e];if("A"===a.tagName)return a;if("UL"!==a.tagName){var n=a.querySelector("a");if(n)return n}}return null}function c(t){var e=t.querySelector('[data-flp="t"]');return(e?e.textContent:t.textContent).replace(/\s+/g," ").trim()}function d(t){return t.replace(/\s*\/\s*/g," / ")}function f(){var i=e.querySelector("header.js-head-main");if(i&&!e.getElementById("flb1cat")){var f=e.querySelector(".nav-list");if(f){for(var p=null,u=l(f,"LI"),h=0;h<u.length;h++){var b=s(u[h]);if(u[h].querySelector("ul")&&b&&/productos/i.test(b.textContent)){p=u[h];break}}if(p){var g=[],v=null;if(l(p.querySelector("ul"),"LI").forEach(function(t){var e=s(t);if(e){var a=c(e),n=e.getAttribute("href");if(/^ver tod/i.test(a))n&&"#"!==n&&(v=n);else{var r=t.querySelector("ul"),i={t:a,h:n,ws:/winter/i.test(a),hijos:[]};r&&(l(r,"LI").forEach(function(t){var e=s(t);if(e){var a=c(e),n=e.getAttribute("href");/^ver tod/i.test(a)?n&&"#"!==n&&(i.h=n):n&&"#"!==n&&i.hijos.push({t:a,h:n})}}),i.h&&"#"!==i.h||!i.hijos.length||(i.h=i.hijos[0].h)),i.h&&"#"!==i.h&&g.push(i)}}}),!(g.length<2)){var m,x,y=location.pathname.replace(/\/+$/,"")+"/",w='<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';m='#flb1cat{display:none}@media (min-width:992px){#flb1cat{display:block;position:relative;border-top:1px solid rgba(17,17,17,.12);font-family:inherit;color:#111}#flb1cat *{box-sizing:border-box}#flb1cat .in{display:flex;align-items:center;height:46px;padding:0 24px;gap:4px}#flb1cat .cb{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;height:22px;margin:0 8px 0 0;padding:0 18px 0 0;border:0;border-right:1px solid rgba(17,17,17,.18);background:none;font-family:inherit;font-weight:800;font-size:12.5px;line-height:1;letter-spacing:.09em;text-transform:uppercase;color:#111;cursor:pointer}#flb1cat .cb svg{width:12px;height:12px;transition:transform .2s ease}#flb1cat .cb[aria-expanded="true"] svg{transform:rotate(180deg)}#flb1cat .vp{flex:1 1 auto;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}#flb1cat .vp::-webkit-scrollbar{display:none}#flb1cat.desb .vp{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%)}#flb1cat .tr{display:flex;gap:30px;list-style:none!important;margin:0!important;padding:0 14px!important;white-space:nowrap}#flb1cat .tr li{list-style:none!important;margin:0!important;padding:0!important}#flb1cat .tr a{position:relative;display:block;padding:15px 0;font-weight:600;font-size:12.5px;line-height:16px;letter-spacing:.07em;text-transform:uppercase;color:#111!important;text-decoration:none!important}#flb1cat .tr a:after{content:"";position:absolute;left:0;right:0;bottom:10px;height:2px;background:'+a+";transform:scaleX(0);transition:transform .25s ease}#flb1cat .tr a:hover:after,#flb1cat .tr a.on:after{transform:scaleX(1)}#flb1cat .tr a.on{font-weight:800}#flb1cat .tr a.ws{color:"+n+"!important}#flb1cat .tr a.ws:after{background:"+n+"}#flb1cat .ar{flex:0 0 auto;display:none;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:none;color:#111;cursor:pointer}#flb1cat .ar svg{width:14px;height:14px}#flb1cat .pv svg{transform:rotate(90deg)}#flb1cat .nx svg{transform:rotate(-90deg)}#flb1cat.desb .ar{display:inline-flex;align-items:center;justify-content:center}#flb1cat .ar:hover{background:rgba(17,17,17,.07)}#flb1cat .ar[disabled]{opacity:.25;cursor:default;background:none}#flb1cat .pan{position:absolute;left:24px;top:100%;z-index:5;min-width:600px;max-width:calc(100% - 48px);padding:22px 28px 18px;background:#FAF8F3;border:1px solid rgba(17,17,17,.14);box-shadow:0 22px 44px rgba(0,0,0,.13);-webkit-columns:3 170px;columns:3 170px;-webkit-column-gap:36px;column-gap:36px}#flb1cat .pan>div{-webkit-column-break-inside:avoid;break-inside:avoid}#flb1cat .pan[hidden]{display:none}#flb1cat .pan a{display:block;padding:8px 0;font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:#111!important;text-decoration:none!important}#flb1cat .pan a:hover{color:"+a+"!important}#flb1cat .pan a.ws{color:"+n+"!important}#flb1cat .pan .sb a{padding:4px 0 4px 12px;font-weight:500;text-transform:none;letter-spacing:0;color:#555!important}#flb1cat .pan .td{-webkit-column-span:all;column-span:all;margin-top:10px;padding-top:12px;border-top:1px solid rgba(17,17,17,.12)}#flb1cat .pan .td a{display:inline-block}}",(x=e.createElement("style")).textContent=m,e.head.appendChild(x);var k="",L="";g.forEach(function(t){var e=(t.ws?"ws":"")+(T(t.h)?" on":"");k+='<li><a class="'+e+'" href="'+o(t.h)+'">'+o(d(t.t))+"</a></li>",L+='<div><a class="'+(t.ws?"ws":"")+'" href="'+o(t.h)+'">'+o(d(t.t))+"</a>",t.hijos.length&&(L+='<div class="sb">',t.hijos.forEach(function(t){L+='<a href="'+o(t.h)+'">'+o(t.t)+"</a>"}),L+="</div>"),L+="</div>"}),v&&(k+='<li><a href="'+o(v)+'"'+(T(v,!0)?' class="on"':"")+">Ver todo</a></li>",L+='<div class="td"><a href="'+o(v)+'">Ver todos los productos \u2192</a></div>');var S=e.createElement("div");S.id="flb1cat",S.innerHTML='<nav class="in" aria-label="Categor\xedas"><button type="button" class="cb" aria-expanded="false" aria-controls="flb1pan">Categor\xedas '+w+'</button><button type="button" class="ar pv" aria-label="Ver categor\xedas anteriores">'+w+'</button><div class="vp"><ul class="tr">'+k+'</ul></div><button type="button" class="ar nx" aria-label="Ver m\xe1s categor\xedas">'+w+'</button></nav><div class="pan" id="flb1pan" hidden>'+L+"</div>",i.appendChild(S);var E=S.querySelector(".cb"),q=S.querySelector(".pan"),C=S.querySelector(".vp"),B=S.querySelector(".pv"),I=S.querySelector(".nx"),A=0;E.addEventListener("click",function(){z(q.hidden)}),E.addEventListener("mouseenter",function(){z(!0)}),q.addEventListener("mouseenter",function(){clearTimeout(A)}),S.addEventListener("mouseleave",function(){A=setTimeout(function(){z(!1)},220)}),e.addEventListener("keydown",function(t){"Escape"!==t.key&&27!==t.keyCode||q.hidden||(z(!1),E.focus())}),e.addEventListener("click",function(t){q.hidden||S.contains(t.target)||z(!1)}),B.addEventListener("click",function(){V(-1)}),I.addEventListener("click",function(){V(1)}),C.addEventListener("scroll",O,{passive:!0}),t.addEventListener("resize",O);var F=S.querySelector(".tr a.on");if(F){var M=F.getBoundingClientRect(),j=C.getBoundingClientRect();(M.left<j.left+28||M.right>j.right-28)&&(C.scrollLeft+=M.left-j.left-40)}O(),e.fonts&&e.fonts.ready&&e.fonts.ready.then(O)}}}}function T(t,e){try{var a=new URL(t,location.href).pathname.replace(/\/+$/,"")+"/";return"/"!==a&&(e?y===a:0===y.indexOf(a))}catch(t){return!1}}function z(t){clearTimeout(A),q.hidden=!t,E.setAttribute("aria-expanded",t?"true":"false")}function O(){var t=C.scrollWidth-C.clientWidth;S.classList.toggle("desb",t>2),B.disabled=C.scrollLeft<=2,I.disabled=C.scrollLeft>=t-2}function V(t){var e=C.scrollLeft+t*C.clientWidth*.7;C.scrollTo?C.scrollTo({left:e,behavior:r?"auto":"smooth"}):C.scrollLeft=e}}function p(){if("IntersectionObserver"in t&&!r){var a=e.getElementById("flstats");if(a)return i(a);if(t.MutationObserver){var n=new MutationObserver(function(){var t=e.getElementById("flstats");t&&(n.disconnect(),i(t))});n.observe(e.body,{childList:!0,subtree:!0})}}function i(e){if(!e.getAttribute("data-flb1")){e.setAttribute("data-flb1","1");for(var a=[],n=e.querySelectorAll(".v, .k"),r=0;r<n.length;r++)for(var i=0;i<n[r].childNodes.length;i++){var o=n[r].childNodes[i];if(3===o.nodeType){var l=o.nodeValue.match(/^(\D*?)(\d{1,3}(?:\.\d{3})+)([\s\S]*)$/);l&&a.push({nd:o,pre:l[1],fin:+l[2].replace(/\./g,""),post:l[3]})}}if(a.length){var s=new IntersectionObserver(function(e){if(e[0].isIntersecting){s.disconnect();var n=0;t.requestAnimationFrame(function e(r){n||(n=r);var i=Math.min(1,(r-n)/1600),o=1-Math.pow(1-i,3);a.forEach(function(t){var e;t.nd.nodeValue=t.pre+(e=t.fin*o,String(Math.round(e)).replace(/\B(?=(\d{3})+(?!\d))/g,"."))+t.post}),i<1&&t.requestAnimationFrame(e)})}},{threshold:.5});s.observe(e)}}}}function u(){try{f()}catch(e){t.FLB1.err=String(e)}var a=e.querySelector("header.js-head-main");a&&a.classList.add("flb1");try{i&&p()}catch(e){t.FLB1.err=String(e)}}}(window,document);
 /* + BLACK FRIDAY 2026 (FLBF v1.1.2, 25-nov-2026, arranca hoy) · fuente: FL GRAL/black-friday-2026/codigo-web/promobf.src.js */
-/* FL Indumentaria · BLACK FRIDAY 2026 (miércoles 25 al lunes 30 de noviembre) · FLBF v1.1.3 (25-nov-2026: arranca HOY + banner animado GIF; v1.1.1: esconde la etiqueta «Envío gratis» del tema que tapaba el «10% OFF»; v1.1.2: precio por transferencia PRIMERO y más grande, con etiqueta bordó; v1.1.3: precio por transferencia en UN bloque bordó, precio grande y abajo «(+20% extra por transferencia)»)
+/* FL Indumentaria · BLACK FRIDAY 2026 (miércoles 25 al lunes 30 de noviembre) · FLBF v1.1.4 (25-nov-2026: arranca HOY + banner animado GIF; v1.1.1: esconde la etiqueta «Envío gratis» del tema que tapaba el «10% OFF»; v1.1.2: precio por transferencia PRIMERO y más grande, con etiqueta bordó; v1.1.3: precio por transferencia en UN bloque bordó, precio grande y abajo «(+20% extra por transferencia)»; v1.1.4: la promo se comunica como «HASTA 30/35/40% OFF por transferencia» (barra, ficha); recuadro «POR TRANSFERENCIA» en mayúscula; en el carrito siguen 10/15/20 + «+20% OFF EXTRA ABONANDO POR TRANSFERENCIA» grande; el tachado va DENTRO del recuadro bordó, al lado del precio por transferencia)
    Va en el bloque 1 (b1/categorias-y-numeros.js en github.com/MTCONSULTORES/fl-tienda), que se carga con defer en todas las páginas.
    Se prende el miércoles 25-nov 00:00 (Facundo lo activó ese día) (Argentina) y se apaga SOLO el martes 1-dic 00:00: compara con el reloj de quien mira.
    Antes y después NO toca la página. ?flbf en la dirección = prendido fuera de fecha para mirarlo (queda prendido en esa pestaña
@@ -21,7 +21,7 @@
   if (w.FLBF) return;
   var INI = Date.parse('2026-11-25T00:00:00-03:00'), FIN = Date.parse('2026-12-01T00:00:00-03:00');
   var T15 = 140000, T20 = 200000;
-  var P = w.FLBF = { v: '1.1.3', activa: false, T15: T15, T20: T20 };
+  var P = w.FLBF = { v: '1.1.4', activa: false, T15: T15, T20: T20 };
   try {
     var q = w.location.search || '', t = Date.now(), ss = null;
     try { ss = w.sessionStorage; } catch (e0) {}
@@ -32,17 +32,17 @@
   } catch (e) { P.err = String(e); }
   // barra de arriba (la usa FLBA): devuelve el texto nuevo de cada mensaje, o el mismo si no corresponde
   P.textoBarra = function (t) {
-    if (/transfer/i.test(t)) return 'Black Friday: hasta 20% OFF · +20% extra por transferencia';
+    if (/transfer/i.test(t)) return 'Black Friday: hasta 40% OFF por transferencia';
     if (/env[ií]o/i.test(t)) return 'Envío gratis a todo el país';
     if (/cuota/i.test(t)) return '9 cuotas sin interés desde $200.000';
     return t;
   };
   if (!P.activa) return;
 
-  var CDN = 'https://cdn.jsdelivr.net/gh/MTCONSULTORES/fl-tienda@6988a62a959ec1eac34aaf301c60532c91e2bae4/b17/';
+  var CDN = 'https://cdn.jsdelivr.net/gh/MTCONSULTORES/fl-tienda@99ed386f4b563f12baa19023f6606472a5b41441/b17/';
   var NEGRO = '#0B0B0B', CREMA = '#F2EDE4', ROJO = '#E3311D', BORDO = '#4E0A06';
   var A = 'Anton,Impact,"Arial Narrow",sans-serif', G = '"Geist Mono",ui-monospace,Menlo,monospace';
-  var ALT = 'Black Friday: 10% en toda la web, 15% desde $140.000, 20% desde $200.000 + 9 cuotas sin interés, envío gratis a todo el país';
+  var ALT = 'Black Friday: abonando por transferencia hasta 30% OFF en toda la web, 35% desde $140.000 y 40% desde $200.000; 9 cuotas sin interés desde $200.000; envío gratis a todo el país';
 
   function plata(n) { n = Math.round(+n || 0); return '$' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
   function num(s) { s = String(s || '').replace(/[^\d,]/g, '').replace(/,\d*$/, ''); return +s || 0; }
@@ -67,8 +67,9 @@
       'html.flbf .js-item-product .flp-host,html.flbf .js-item-product .js-price-display,html.flbf .js-item-product .js-compare-price-display,' +
       'html.flbf .js-item-product .item-link .js-nubesdk-slot,html.flbf .js-item-product .js-offer-label,html.flbf .js-labels-floating-group .js-free-shipping-minimum-label{display:none!important}' +
       '.flbf-p .t{display:inline-flex;flex-direction:column;align-items:flex-start;max-width:100%;box-sizing:border-box;background:' + BORDO + ';color:#fff;padding:6px 9px 6px;border-radius:3px;margin-bottom:4px}' +
-      '.flbf-p .t span{display:block;font-size:10px;font-weight:700;line-height:1.2;letter-spacing:0;margin-top:3px}' +
+      '.flbf-p .t span{display:block;font-size:10px;font-weight:800;line-height:1.2;letter-spacing:.06em;text-transform:uppercase;margin-top:4px}' +
       '.flbf-p .t b{font-size:23px;font-weight:800;letter-spacing:-.015em;line-height:1}' +
+      '.flbf-p .t .r{display:flex;flex-direction:column;align-items:flex-start;row-gap:3px}.flbf-p .t s{font-size:12px;font-weight:600;line-height:1;color:rgba(255,255,255,.62);text-decoration-thickness:1.5px}' +
       '.flbf-p .s{font-size:10.5px;line-height:1.35;color:#6f675e;margin-top:2px}.flbf-p .s s{color:#a39a90;margin-right:4px}.flbf-p .s b{color:#111;font-weight:700}' +
       '.flbf-band{position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;height:24px;pointer-events:none}' +
       '.flbf-band .o{display:flex;align-items:center;padding:1px 8px 0;background:' + ROJO + ';color:' + CREMA + ';font:700 9px/1 ' + G + ';letter-spacing:.08em;white-space:nowrap}' +
@@ -80,12 +81,15 @@
       '.flbf-fp .l1 s{color:#9a9087;font-size:15px}.flbf-fp .l1 b{font-size:20px;font-weight:800;color:#111;letter-spacing:-.01em}.flbf-fp .l1 .ct{font-size:13px;color:#4b443d;margin-left:-6px}' +
       '.flbf-fp .l1 i{font-style:normal;background:' + ROJO + ';color:' + CREMA + ';font:700 11px/1 ' + G + ';letter-spacing:.08em;padding:5px 7px 4px;align-self:center}' +
       '.flbf-fp .tr{display:inline-flex;flex-direction:column;align-items:flex-start;margin:0 0 10px;background:' + BORDO + ';color:#fff;padding:8px 13px 9px;border-radius:3px}' +
-      '.flbf-fp .tr small{font-size:12px;font-weight:700;line-height:1.2;margin-top:4px}.flbf-fp .tr b{font-size:30px;font-weight:800;line-height:1;letter-spacing:-.015em}' +
+      '.flbf-fp .tr small{font-size:12px;font-weight:800;line-height:1.2;letter-spacing:.07em;text-transform:uppercase;margin-top:5px}.flbf-fp .tr b{font-size:30px;font-weight:800;line-height:1;letter-spacing:-.015em}' +
+      '.flbf-fp .tr .r{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:9px;row-gap:2px}.flbf-fp .tr s{font-size:16px;font-weight:600;line-height:1;color:rgba(255,255,255,.62);text-decoration-thickness:2px}' +
       '.flbf-fp .cu{font-size:13px;color:#4b443d;margin-top:7px}' +
       '.flbf-x{background:' + NEGRO + ';color:' + CREMA + ';padding:14px 14px 13px;margin:14px 0 8px;box-shadow:inset 0 3px 0 ' + ROJO + ';font-family:inherit}' +
       '.flbf-x .k{font:700 10px/1.2 ' + G + ';letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:7px;color:' + CREMA + '}' +
       '.flbf-x .k i{display:inline-block;width:6px;height:6px;background:' + ROJO + ';flex:none}.flbf-x .k b{color:' + ROJO + ';font-weight:700}' +
-      '.flbf-x .cols{display:grid;grid-template-columns:1fr 1fr 1.25fr;margin-top:12px}' +
+      '.flbf-x .hs{font:400 17px/1 ' + A + ';text-transform:uppercase;letter-spacing:.04em;color:' + CREMA + ';margin-top:11px}' +
+      '.flbf-x .cols{display:grid;grid-template-columns:1fr 1fr 1.25fr;margin-top:7px}' +
+      '.flbf-x .tf{font:700 7.5px/1.25 ' + G + ';letter-spacing:.05em;text-transform:uppercase;color:' + CREMA + ';margin-top:4px}' +
       '.flbf-x .c{padding:0 8px 0 0;min-width:0}.flbf-x .c+.c{padding-left:9px;border-left:1px solid rgba(242,237,228,.22)}' +
       '.flbf-x .p{font:400 28px/.95 ' + A + '}.flbf-x .p small{font-size:.5em;color:' + ROJO + ';margin-left:2px;vertical-align:.85em}.flbf-x .c:last-child .p{font-size:35px}' +
       '.flbf-x .m{font:700 8.5px/1.25 ' + G + ';letter-spacing:.06em;text-transform:uppercase;color:rgba(242,237,228,.75);margin-top:5px;min-height:21px}' +
@@ -107,13 +111,14 @@
       '.flbf-c .lb{position:relative;height:28px;font:700 8.5px/1.25 ' + G + ';letter-spacing:.04em;text-transform:uppercase;color:rgba(242,237,228,.7)}' +
       '.flbf-c .lb span{position:absolute;top:0;white-space:nowrap}.flbf-c .lb b{color:' + CREMA + '}.flbf-c .lb .si b{color:' + ROJO + '}' +
       '.flbf-c .s{font:700 9.5px/1.3 ' + G + ';letter-spacing:.06em;text-transform:uppercase;color:rgba(242,237,228,.75);margin-top:2px}' +
+      '.flbf-c .tx{background:' + CREMA + ';color:' + NEGRO + ';font:400 19px/1.1 ' + A + ';text-transform:uppercase;letter-spacing:.01em;padding:7px 9px 6px;margin:2px 0 8px}' +
       /* dentro de la hoja del bloque 15 sus reglas para <b> (más grandes y bordó) le ganan a las de acá: se las pisa */
       '#flb-hoja .flbf-c b{font-size:inherit;font-weight:700;line-height:inherit;font-family:inherit;display:inline;letter-spacing:inherit;margin:0;color:' + CREMA + '}' +
       '#flb-hoja .flbf-c .h b{font-weight:400;color:' + ROJO + '}#flb-hoja .flbf-c .k b,#flb-hoja .flbf-c .lb .si b{color:' + ROJO + '}' +
       '@media (prefers-reduced-motion:reduce){.flbf-c .bar .f{transition:none}}' +
       '@media (min-width:768px){html.flbf .js-item-product .js-product-item-image-container-private:before{top:14px;right:14px;height:24px;padding:1px 9px 0 22px;background-position:10px 50%;background-size:6px 6px;font-size:10px}' +
-      '.flbf-p .t b{font-size:29px}.flbf-p .t{padding:7px 12px 8px}.flbf-p .t span{font-size:12px}.flbf-p .s{font-size:12.5px}.flbf-band{height:32px}.flbf-band .e{font-size:16px}.flbf-band .o{font-size:11px;padding:1px 12px 0}.flbf-band svg{width:26px;height:17px}' +
-      '.flbf-fp .l1 b{font-size:22px}.flbf-fp .tr b{font-size:36px}.flbf-fp .tr small{font-size:13px}}';
+      '.flbf-p .t b{font-size:29px}.flbf-p .t .r{flex-direction:row;align-items:baseline;column-gap:8px}.flbf-p .t s{font-size:15px}.flbf-p .t{padding:7px 12px 8px}.flbf-p .t span{font-size:12px}.flbf-p .s{font-size:12.5px}.flbf-band{height:32px}.flbf-band .e{font-size:16px}.flbf-band .o{font-size:11px;padding:1px 12px 0}.flbf-band svg{width:26px;height:17px}' +
+      '.flbf-fp .l1 b{font-size:22px}.flbf-fp .tr b{font-size:36px}.flbf-fp .tr s{font-size:19px}.flbf-fp .tr small{font-size:13px}}';
     var st = d.createElement('style'); st.id = 'flbf-css'; st.textContent = css;
     (d.head || d.documentElement).appendChild(st);
     d.documentElement.classList.add('flbf');
@@ -128,8 +133,8 @@
       if (!x.p) return;
       pc.setAttribute('data-flbf', '1');
       var bx = d.createElement('div'); bx.className = 'flbf-p';
-      bx.innerHTML = '<div class="t"><b>' + plata(x.transf) + '</b><span>(+20% extra por transferencia)</span></div>' +
-        '<div class="s"><s>' + plata(x.tachado) + '</s><b>' + plata(x.con10) + '</b> con tarjeta</div>' +
+      bx.innerHTML = '<div class="t"><div class="r"><s>' + plata(x.tachado) + '</s><b>' + plata(x.transf) + '</b></div><span>Por transferencia</span></div>' +
+        '<div class="s"><b>' + plata(x.con10) + '</b> con tarjeta</div>' +
         '<div class="s">6 cuotas sin interés de ' + plata(x.con10 / 6) + '</div>';
       pc.insertBefore(bx, pc.firstChild);
       var it = pc.closest ? pc.closest('.js-item-product') : null;
@@ -145,11 +150,11 @@
   // ---------- 2) ficha de la prenda ----------
   function escalera(L) {
     return '<div class="k"><i></i>Black Friday · <b>más llevás, más ahorrás</b></div>' +
-      '<div class="cols">' +
-      '<div class="c"><div class="p">10%<small>OFF</small></div><div class="m">En toda<br>la web</div><div class="v"><span>Te queda</span>' + plata(L * 0.9) + '</div></div>' +
-      '<div class="c"><div class="p">15%<small>OFF</small></div><div class="m">Desde<br>$140.000</div><div class="v"><span>Te queda</span>' + plata(L * 0.85) + '</div></div>' +
-      '<div class="c"><div class="p">20%<small>OFF</small></div><div class="m">Desde<br>$200.000</div><div class="v"><span>Te queda</span>' + plata(L * 0.8) + '</div><div class="q">+ 9 cuotas sin interés</div></div>' +
-      '</div><div class="pie">Envío gratis <span>a todo el país · +20% extra abonando por transferencia</span></div>';
+      '<div class="hs">Hasta</div><div class="cols">' +
+      '<div class="c"><div class="p">30%<small>OFF</small></div><div class="m">En toda<br>la web</div><div class="tf">Por transferencia</div><div class="v"><span>Te queda</span>' + plata(L * 0.9 * 0.8) + '</div></div>' +
+      '<div class="c"><div class="p">35%<small>OFF</small></div><div class="m">Desde<br>$140.000</div><div class="tf">Por transferencia</div><div class="v"><span>Te queda</span>' + plata(L * 0.85 * 0.8) + '</div></div>' +
+      '<div class="c"><div class="p">40%<small>OFF</small></div><div class="m">Desde<br>$200.000</div><div class="tf">Por transferencia</div><div class="v"><span>Te queda</span>' + plata(L * 0.8 * 0.8) + '</div><div class="q">+ 9 cuotas sin interés</div></div>' +
+      '</div><div class="pie">Envío gratis <span>a todo el país</span></div>';
   }
   var ficha = null;
   function pintarFicha() {
@@ -159,8 +164,8 @@
     var clave = x.p + '|' + x.tachado;
     if (ficha.clave === clave) return;
     ficha.clave = clave;
-    ficha.fp.innerHTML = '<div class="tr"><b>' + plata(x.transf) + '</b><small>(+20% extra por transferencia)</small></div>' +
-      '<div class="l1"><s>' + plata(x.tachado) + '</s><b>' + plata(x.con10) + '</b><span class="ct">con tarjeta</span><i>' + x.off + '% OFF</i></div>' +
+    ficha.fp.innerHTML = '<div class="tr"><div class="r"><s>' + plata(x.tachado) + '</s><b>' + plata(x.transf) + '</b></div><small>Por transferencia</small></div>' +
+      '<div class="l1"><b>' + plata(x.con10) + '</b><span class="ct">con tarjeta</span><i>' + x.off + '% OFF</i></div>' +
       '<div class="cu">6 cuotas sin interés de <b>' + plata(x.con10 / 6) + '</b> · 9 cuotas desde $200.000</div>';
     ficha.x.innerHTML = escalera(x.p);
   }
@@ -198,7 +203,7 @@
     var k, h, s;
     if (sub < T15) { k = 'Black Friday · ya tenés <b>10% OFF</b>'; h = 'Te faltan <b>' + plata(T15 - sub) + '</b> para el 15% OFF'; s = 'Sumá otra prenda y llegás'; }
     else if (sub < T20) { k = 'Black Friday · ¡ya tenés <b>15% OFF</b>!'; h = 'Te faltan <b>' + plata(T20 - sub) + '</b> para el 20% OFF + 9 cuotas'; s = 'Con una remera o una bermuda más, llegás'; }
-    else { k = 'Black Friday · el descuento más grande'; h = '¡Tenés <b>20% OFF</b> + 9 cuotas sin interés!'; s = 'Y abonando por transferencia, 20% extra'; }
+    else { k = 'Black Friday · el descuento más grande'; h = '¡Tenés <b>20% OFF</b> + 9 cuotas sin interés!'; s = ''; }
     var tope = T20 * 1.15, pct = Math.min(sub / tope, 1) * 100, x15 = T15 / tope * 100, x20 = T20 / tope * 100;
     return '<div class="k"><i></i>' + k + '</div><div class="h">' + h + '</div>' +
       '<div class="bar"><div class="f" style="width:' + pct.toFixed(1) + '%"></div><div class="t si" style="left:0"></div>' +
@@ -206,7 +211,7 @@
       '<div class="lb"><span class="si" style="left:0"><b>10%</b><br>en todo</span>' +
       '<span class="' + (sub >= T15 ? 'si' : '') + '" style="left:' + x15.toFixed(1) + '%;transform:translateX(-50%);text-align:center"><b>15%</b><br>$140.000</span>' +
       '<span class="' + (sub >= T20 ? 'si' : '') + '" style="left:' + x20.toFixed(1) + '%;transform:translateX(-50%);text-align:center"><b>20% + 9 cuotas</b><br>$200.000</span></div>' +
-      '<div class="s">' + s + '</div>';
+      '<div class="tx">+20% OFF extra abonando por transferencia</div>' + (s ? '<div class="s">' + s + '</div>' : '');
   }
   function carritos() {
     $$('.js-ajax-cart-list').forEach(function (lista) {
