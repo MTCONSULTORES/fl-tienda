@@ -1,4 +1,6 @@
-/* FL Indumentaria · bloque 13 · CYBER MONDAY noviembre de 2026 (opción 1: negro arriba, prendas en crema).
+/* FL Indumentaria · bloque 13 · v2.0.0 BLACK FRIDAY 26 al 30-nov-2026 con el MISMO diseño del CYBER MONDAY (pedido de Facundo el 26-nov:
+   «volver al diseño que tenía el Cyber Monday, exactamente el mismo»): textos, banner (35% + 9 cuotas), reloj hasta el dom 30 23:59.
+   Lo de abajo es la descripción del Cyber (opción 1: negro arriba, prendas en crema); la v1.3.0 del Cyber está en cyber.src.v1.3.0.js.
    Desde el 5-nov: EXTENDIDO, con la franja «ÚLTIMA OPORTUNIDAD» en el lugar del reloj. Desde RELOJ_DESDE (dom 8-nov 00:00) la
    franja se cambia sola por la cuenta regresiva hasta FIN, también en una página que ya estaba abierta (pedido de Facundo).
    Lo carga el cargador del pie (cargador-b13.html) SOLO del lun 2-nov 00:00 al mar 10-nov 00:00 (Argentina) o con ?flcyber.
@@ -12,7 +14,8 @@
    El reloj cambia SOLO el texto de los números (nodeValue), nunca el HTML. ES5. */
 (function (w, d) {
   if (w.FLB13) return;
-  var F = w.FLB13 = { v: '1.3.0', err: [] };     // 1.3.0 (6-nov): la cuenta regresiva se prende sola el dom 8-nov 00:00 (pedido de Facundo)
+  var F = w.FLB13 = { v: '2.0.0', bf: 1, err: [] };   // 2.0.0 (26-nov): BLACK FRIDAY con el diseño del Cyber
+  //     // 1.3.0 (6-nov): cuenta regresiva del Cyber extendido;     // 1.3.0 (6-nov): la cuenta regresiva se prende sola el dom 8-nov 00:00 (pedido de Facundo)
   //     // 1.2.1 (5-nov): «ÚLTIMA OPORTUNIDAD» en lugar de «por tiempo limitado» (pedido de Facundo)
   //     // 1.2.0 (5-nov): Cyber EXTENDIDO sin fechas ni reloj (franja en el lugar del reloj)
   //     // 1.1.4 (2-nov): medida del GIF de la compu en el <source> (la página saltaba al cargar)
@@ -20,13 +23,13 @@
   //     // 1.1.2 (2-nov): 9 cuotas sin interés (primero en la barra, en la cinta y en el banner)
   //     // 1.1.1 (2-nov): sin «· precios ya rebajados» en el reloj (pedido de Facundo)
   //     // 1.1.0 (30-oct): ENVÍO GRATIS para todos en el Cyber (tarjetas y ficha)
-  var INICIO = Date.UTC(2026, 10, 2, 3), FIN = Date.UTC(2026, 10, 10, 3);    // lun 2-nov 00:00 → mar 10-nov 00:00 (AR) = hasta el lunes 9 a las 23:59
-  var RELOJ_DESDE = Date.UTC(2026, 10, 8, 3);     // dom 8-nov 00:00 (AR): hasta acá la franja «EXTENDIDO», desde acá la cuenta regresiva hasta FIN
-  var PIE_RELOJ = 'Hasta el <b>lunes 9 a las 23:59</b>';
-  var BARRA = ['9 cuotas sin interés', 'Cyber extendido: última oportunidad', 'Hasta 30% OFF por transferencia',
+  var INICIO = Date.UTC(2026, 10, 26, 3), FIN = Date.UTC(2026, 11, 1, 3);    // lun 2-nov 00:00 → mar 10-nov 00:00 (AR) = hasta el lunes 9 a las 23:59
+  var RELOJ_DESDE = INICIO;     // dom 8-nov 00:00 (AR): hasta acá la franja «EXTENDIDO», desde acá la cuenta regresiva hasta FIN
+  var PIE_RELOJ = 'Hasta el <b>domingo 30 a las 23:59</b>';
+  var BARRA = ['9 cuotas sin interés', 'Black Friday · hasta el 30 de noviembre', 'Hasta 35% OFF por transferencia',
     'Envío gratis a todo el país'];   // en el Cyber el envío es gratis en TODA la web; las 9 cuotas PRIMERO (pedido del 2-nov)
-  var CINTA_NEGRA = ['Cyber Monday', 'Hasta 30% OFF', 'Abonando por transferencia'];
-  var CINTA_ROJA = ['Envío gratis a todo el país', '9 cuotas sin interés', 'Última oportunidad'];
+  var CINTA_NEGRA = ['Black Friday', 'Hasta 35% OFF', 'Abonando por transferencia'];
+  var CINTA_ROJA = ['Envío gratis a todo el país', '9 cuotas sin interés', 'Hasta el 30 de noviembre'];
   var IR = '/productos/';
   // los GIF del banner están al lado de este archivo, en el mismo commit de jsDelivr
   var cs0 = d.currentScript, AQUI = (cs0 && cs0.src ? cs0.src : '').replace(/[^\/]*$/, '');
@@ -53,9 +56,9 @@
       x.insertAdjacentHTML('beforeend', '<a class="cy-hero" data-flp="cy" href="' + IR + '"><picture>' +
         // la medida va en el <source>: Tiendanube borra «aspect-ratio» del CSS avanzado y sin esto, en la compu, mientras
         // carga el GIF se reservaba el alto del de celular (4:5) y al llegar se achicaba y la página saltaba (0,18)
-        '<source media="(min-width:768px)" srcset="' + AQUI + 'cyber-compu.gif" width="1440" height="547">' +
-        '<img src="' + AQUI + 'cyber-celu.gif" width="800" height="1000" fetchpriority="high" ' +
-        'alt="Cyber Monday: hasta 30% OFF abonando por transferencia y envío gratis a todo el país"></picture></a>');
+        '<source media="(min-width:768px)" srcset="' + AQUI + 'bf-compu.gif" width="1440" height="547">' +
+        '<img src="' + AQUI + 'bf-celu.gif" width="800" height="1000" fetchpriority="high" ' +
+        'alt="Black Friday: hasta 35% OFF abonando por transferencia, envío gratis a todo el país y 9 cuotas sin interés"></picture></a>');
       x.querySelector('.cy-hero').onclick = function () { marcar('banner'); };
     }
     if (!d.getElementById('cy-reloj')) x.insertAdjacentHTML('afterend', '<section id="cy-reloj" data-flp="cy"></section>');
@@ -70,7 +73,7 @@
   function franja(r) {
     if (r.getAttribute('data-cy') === 'f') return;
     r.setAttribute('data-cy', 'f');
-    r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">CYBER MONDAY EXTENDIDO</span></span>' +
+    r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">BLACK FRIDAY</span></span>' +
       '<span class="caja"><i class="q q1"></i><i class="q q2"></i><i class="q q3"></i><i class="q q4"></i>' +
       '<span class="u"><b class="uo">ÚLTIMA OPORTUNIDAD</b></span></span>' +
       '<span class="pie" style="display:block;text-align:center"><b>No lo extendemos más</b> · Después vuelven los precios normales</span></a>';
@@ -84,7 +87,7 @@
       r.setAttribute('data-cy', 'r');
       var u = function (k, t) { return '<span class="u"><b data-u="' + k + '">00</b><small>' + t + '</small></span>'; };
       var dp = '<span class="dp">:</span>';
-      r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">CYBER MONDAY · TERMINA EN</span></span>' +
+      r.innerHTML = '<a href="' + IR + '" data-flp="cy"><span class="et"><i class="cy-sq"></i><span class="t">BLACK FRIDAY · TERMINA EN</span></span>' +
         '<span class="caja"><i class="q q1"></i><i class="q q2"></i><i class="q q3"></i><i class="q q4"></i>' +
         u('d', 'DÍAS') + dp + u('h', 'HORAS') + dp + u('m', 'MIN') + dp + u('s', 'SEG') + '</span>' +
         '<span class="pie" style="display:block;text-align:center">' + PIE_RELOJ + '</span></a>';
@@ -99,9 +102,9 @@
       if (b.firstChild.nodeValue !== t) b.firstChild.nodeValue = t;
     }
     var et = r.querySelector('.et .t'), pie = r.querySelector('.pie');
-    var titulo = antes ? 'CYBER MONDAY · EMPIEZA EN' : (q < 86400 ? 'CYBER MONDAY · ÚLTIMO DÍA' : 'CYBER MONDAY · TERMINA EN');
+    var titulo = antes ? 'BLACK FRIDAY · EMPIEZA EN' : (q < 86400 ? 'BLACK FRIDAY · ÚLTIMO DÍA' : 'BLACK FRIDAY · TERMINA EN');
     if (et.firstChild.nodeValue !== titulo) et.firstChild.nodeValue = titulo;
-    var p = antes ? 'Arranca el <b>lunes 2 a las 00:00</b>' : PIE_RELOJ;
+    var p = antes ? 'Arranca el <b>jueves 26</b>' : PIE_RELOJ;
     if (pie.getAttribute('data-p') !== p) { pie.setAttribute('data-p', p); pie.innerHTML = p; }
   }
 
@@ -157,7 +160,7 @@
     var a = a0.cloneNode(false);
     a.className = (a0.className || '').replace(/(^|\s)ws(\s|$)/g, ' ') + ' cy-m'; a.href = IR; a.removeAttribute('target');
     a.setAttribute('data-flp', 'cy'); a.removeAttribute('data-flsw');
-    a.innerHTML = '<i class="cy-sq"></i>CYBER MONDAY';
+    a.innerHTML = '<i class="cy-sq"></i>BLACK FRIDAY';
     a.onclick = function () { marcar('categorias'); };
     // 1.1.3: el primer link es el de la Winter Sale y el sello (sinInvierno) esconde SU renglón con display:none: el de
     // CYBER MONDAY va en un renglón propio, antes, no adentro del escondido
@@ -186,11 +189,16 @@
       'background:#0B0B0B;box-shadow:inset 0 3px 0 #E3311D}' +
       // la frase larga se achica con el ancho del celu (la regla del reloj en el CSS avanzado la dejaría en 52 px y se cortaría)
       'html.cy #cy-reloj .u b.uo{white-space:nowrap;font-size:calc((100vw - 84px) / 8.2);line-height:1.1}' +
-      '@media (min-width:600px){html.cy #cy-reloj .u b.uo{font-size:62px}}';
+      '@media (min-width:600px){html.cy #cy-reloj .u b.uo{font-size:62px}}' +
+      // 2.0.0 Black Friday: los textos del Cyber que están en el CSS avanzado se pisan acá (más específico: «body»)
+      'html.cy body .js-item-product .js-product-item-image-container-private:before{content:"BLACK FRIDAY"}' +
+      'html.cy body .js-home-sections-container .section-title:before{content:"PRECIOS BLACK FRIDAY"}' +
+      // la etiqueta «Envío gratis» del tema sobre la foto (la regla de $35.000): cada tarjeta ya tiene su bloque ENVÍO GRATIS
+      'html.cy body .js-free-shipping-minimum-label{display:none!important}';
     (d.head || d.documentElement).appendChild(s);
   }
   var ENVIO_FICHA = '<span class="cy-egf" data-flp="cy">' + CAMION_SVG + '<span class="tx"><span class="g">ENVÍO GRATIS</span>' +
-    '<span class="c">A todo el país · <b>última oportunidad</b></span></span></span>';
+    '<span class="c">A todo el país · <b>hasta el domingo 30</b></span></span></span>';
   function envioFicha() {
     if (!w.LS || !w.LS.product) return;
     if (d.querySelector('.cy-egf')) return;
