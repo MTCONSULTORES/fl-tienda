@@ -1,5 +1,5 @@
 /* FL Indumentaria · bloque 13 · v2.0.0 BLACK FRIDAY 26 al 30-nov-2026 con el MISMO diseño del CYBER MONDAY (pedido de Facundo el 26-nov:
-   «volver al diseño que tenía el Cyber Monday, exactamente el mismo»): textos, banner (35% + 9 cuotas), reloj hasta el dom 30 23:59.
+   «volver al diseño que tenía el Cyber Monday, exactamente el mismo»): textos, banner (35% + 9 cuotas), reloj hasta el lun 30 23:59.
    Lo de abajo es la descripción del Cyber (opción 1: negro arriba, prendas en crema); la v1.3.0 del Cyber está en cyber.src.v1.3.0.js.
    Desde el 5-nov: EXTENDIDO, con la franja «ÚLTIMA OPORTUNIDAD» en el lugar del reloj. Desde RELOJ_DESDE (dom 8-nov 00:00) la
    franja se cambia sola por la cuenta regresiva hasta FIN, también en una página que ya estaba abierta (pedido de Facundo).
@@ -14,7 +14,7 @@
    El reloj cambia SOLO el texto de los números (nodeValue), nunca el HTML. ES5. */
 (function (w, d) {
   if (w.FLB13) return;
-  var F = w.FLB13 = { v: '2.0.0', bf: 1, err: [] };   // 2.0.0 (26-nov): BLACK FRIDAY con el diseño del Cyber
+  var F = w.FLB13 = { v: '2.0.1', bf: 1, err: [] };   // 2.0.0 (26-nov): BLACK FRIDAY con el diseño del Cyber
   //     // 1.3.0 (6-nov): cuenta regresiva del Cyber extendido;     // 1.3.0 (6-nov): la cuenta regresiva se prende sola el dom 8-nov 00:00 (pedido de Facundo)
   //     // 1.2.1 (5-nov): «ÚLTIMA OPORTUNIDAD» en lugar de «por tiempo limitado» (pedido de Facundo)
   //     // 1.2.0 (5-nov): Cyber EXTENDIDO sin fechas ni reloj (franja en el lugar del reloj)
@@ -25,7 +25,7 @@
   //     // 1.1.0 (30-oct): ENVÍO GRATIS para todos en el Cyber (tarjetas y ficha)
   var INICIO = Date.UTC(2026, 10, 26, 3), FIN = Date.UTC(2026, 11, 1, 3);    // lun 2-nov 00:00 → mar 10-nov 00:00 (AR) = hasta el lunes 9 a las 23:59
   var RELOJ_DESDE = INICIO;     // dom 8-nov 00:00 (AR): hasta acá la franja «EXTENDIDO», desde acá la cuenta regresiva hasta FIN
-  var PIE_RELOJ = 'Hasta el <b>domingo 30 a las 23:59</b>';
+  var PIE_RELOJ = 'Hasta el <b>lunes 30 a las 23:59</b>';
   var BARRA = ['9 cuotas sin interés', 'Black Friday · hasta el 30 de noviembre', 'Hasta 35% OFF por transferencia',
     'Envío gratis a todo el país'];   // en el Cyber el envío es gratis en TODA la web; las 9 cuotas PRIMERO (pedido del 2-nov)
   var CINTA_NEGRA = ['Black Friday', 'Hasta 35% OFF', 'Abonando por transferencia'];
@@ -198,7 +198,7 @@
     (d.head || d.documentElement).appendChild(s);
   }
   var ENVIO_FICHA = '<span class="cy-egf" data-flp="cy">' + CAMION_SVG + '<span class="tx"><span class="g">ENVÍO GRATIS</span>' +
-    '<span class="c">A todo el país · <b>hasta el domingo 30</b></span></span></span>';
+    '<span class="c">A todo el país · <b>hasta el lunes 30</b></span></span></span>';
   function envioFicha() {
     if (!w.LS || !w.LS.product) return;
     if (d.querySelector('.cy-egf')) return;
